@@ -4,7 +4,7 @@ namespace blaseball.vo {
 		public string id;
 		public string fullName, location, nickname;
 		public string mainColor, secondaryColor;
-		public int emoji;
+		public string emoji;
 		public string slogan;
 		public int championships;
 		public int shameRuns, totalShames, totalShamings, seasonShames, seasonShamings;

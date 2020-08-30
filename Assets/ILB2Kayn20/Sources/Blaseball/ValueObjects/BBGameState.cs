@@ -5,8 +5,8 @@ namespace blaseball.vo {
 		public string id;
 		public string lastUpdate;
 
-		public int day, season, inning, seriesIndex, seriesLength;
-		public bool topOfInning;
+		public int day, season, inning, seriesIndex, seriesLength, phase, weather;
+		public bool topOfInning, finalized, gameStart, shame, gameComplete, isPostseason;
 
 		public string awayTeam, homeTeam;
 		public int awayScore, homeScore;
@@ -23,5 +23,10 @@ namespace blaseball.vo {
 		public string[] baseRunners;
 
 		public float awayOdds, homeOdds;
+
+		/// <summary>
+		/// Allergies, Incinerations, Feedback. If present, they're for the WHOLE game
+		/// </summary>
+		public string[] outcomes;
 	}
 }

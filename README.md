@@ -11,10 +11,10 @@ Not ready for the big time yet; just here in case something goes wrong!
 
 ## Packages and Prerequisites (Included)
 * Unity 2019.3
-
-* [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity), to install packages from NuGet
-* [NewtonSoft JSON.net](https://www.newtonsoft.com/json)
 * TextMeshPro
-* [EvtSource](https://github.com/3ventic/EvtSource) for Server-Sent Event connection
+* [Zenject 8.0.0](https://github.com/modesttree/Zenject) dependency injection
+* [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity), to install packages from NuGet
+    * [NewtonSoft JSON.net](https://www.newtonsoft.com/json)
+    * [EvtSource](https://github.com/3ventic/EvtSource) for Server-Sent Event connection
 
 Current Maintainer: [@kaynSD](https://twitter.com/kaynSD)

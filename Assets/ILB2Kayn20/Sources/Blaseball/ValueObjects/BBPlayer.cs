@@ -10,12 +10,13 @@ namespace blaseball.vo {
 		coldness, continuation, divinity, groundFriction, indulgence, laserlikeness,
 		martyrdom, moxie, musclitude, omniscience, overpowerment, patheticism,
 		ruthlessness, shakespearianism, suppression, tenaciousness,
-		thwackability, tragicness, unthwackability, watchfulness, pressurization;
+		thwackability, tragicness, unthwackability, watchfulness, pressurization,
+		cinnamon;
 
-		public int totalFingers, soul, fate;
+		public int totalFingers, soul, fate, coffee, blood;
 		public bool deceased, peanutAllergy;
 
-		public float cinnamon;
+		public string bat, armor;
 
 		/// <summary>
 		/// Calculate a player's batter rating.

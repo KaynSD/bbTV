@@ -6,11 +6,13 @@ using System.Net;
 using System.Threading;
 using blaseball.db;
 using blaseball.file;
+using blaseball.ui;
 using blaseball.vo;
 using EvtSource;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace blaseball.service {
 
@@ -19,12 +21,17 @@ namespace blaseball.service {
 	{
 		// IBL SSE Service; Codename Jessica Telephone
 		// Valid for Season 4
-		public JTService(IFileLoader logger, IBlaseballDatabase database)
-		{
-			bbConnection = new EventSourceReader(new Uri("https://www.blaseball.com/events/streamData"));
-			Logger = logger;
-			Database = database;
-		}
+
+		[Inject]
+		public IBlaseballDatabase Database;
+		[Inject]
+		public IBlaseballFileLoader FileLoader;
+		[Inject]
+		public ApplicationConfig ApplicationConfig;
+		[Inject]
+		public IUILogger Logger;
+
+		public JTService(){}
 
 		public BlaseballDatabaseResult OnDatabaseCreated;
 		public BlaseballDatabaseResult OnDatabaseFailed;
@@ -32,13 +39,15 @@ namespace blaseball.service {
 		EventSourceReader bbConnection;
 
 		public BBGameStateDelegate OnGameUpdateRecieved { get; set; }
-		public IFileLoader Logger { get; }
-		public IBlaseballDatabase Database { get; }
 
 		public void Connect() {
+
+			if(bbConnection == null) {
+				bbConnection = new EventSourceReader(new Uri(ApplicationConfig.BlaseballServiceSSEPath));
+			}
 			
-			
-			Debug.Log("Ring Ring... #NeverLookFEEDBack");
+			Logger.Log("JTService Connecting");
+			Logger.Log("~~Ring Ring... #NeverLookFEEDBack");
 			bbConnection.MessageReceived += OnMessage;
 			bbConnection.Disconnected += OnDisconnect;
 			bbConnection.Start();
@@ -52,15 +61,11 @@ namespace blaseball.service {
 		private void OnMessage(object sender, EventSourceMessageEventArgs e)
 		{
 			Parse(e.Message);
-			//Debug.Log(e.Message);
-
-			//StreamWriter writer = new StreamWriter("C:/Users/Keith Evans/Desktop/test.json");
-			//writer.WriteLine(e.Message);
-			//writer.Close();
 		}
 
 		private void Parse(string message)
 		{
+			FileLoader.LogRawData("raw", message);
 			JObject jsonBlob = JObject.Parse(message);
 			
 			string msg = (jsonBlob["value"]["games"].ToString());
@@ -68,7 +73,7 @@ namespace blaseball.service {
 
 			foreach(BBGameState state in Update.schedule) {
 				OnGameUpdateRecieved?.Invoke(state);
-				Logger.SaveLog(Database, state.id, JsonUtility.ToJson(state));
+				FileLoader.LogGame(state.id, JsonUtility.ToJson(state));
 			}
 		}
 
@@ -77,11 +82,12 @@ namespace blaseball.service {
 			bbConnection.MessageReceived -= OnMessage;
 			bbConnection.Disconnected -= OnDisconnect;
 			bbConnection.Dispose();
+			bbConnection = null;
 		}
 
-		public void BuildDatabase(string league, IBlaseballDatabase database, DatabaseConfigurationOptions options)
+		public void BuildDatabase(string league, DatabaseConfigurationOptions options)
 		{
-			Thread DatabaseBuilder = new Thread(() => _BuildDatabase(league, database, options));
+			Thread DatabaseBuilder = new Thread(() => _BuildDatabase(league, options));
 			DatabaseBuilder.Start();
 		}
 
@@ -95,7 +101,7 @@ namespace blaseball.service {
 			return value;
 		}
 
-		private void _BuildDatabase(string league, IBlaseballDatabase database, DatabaseConfigurationOptions options)
+		private void _BuildDatabase(string league, DatabaseConfigurationOptions options)
 		{
 			int shortDelay = 2000; //ms
 			bool success = true;
@@ -110,16 +116,16 @@ namespace blaseball.service {
 					OnDatabaseFailed?.Invoke();
 					return;
 				}
-				Log("League Information Downloaded");
-				database.SetLeague(JsonUtility.FromJson<BBLeague>(leagueInformation));
-				Log("League Information Entered");
+				Logger.Log("League Information Downloaded");
+				Database.SetLeague(JsonUtility.FromJson<BBLeague>(leagueInformation));
+				Logger.Log("League Information Entered");
 				Thread.Sleep(shortDelay);
 				
 			}
 			// Create Subleague Information
-			if(options == DatabaseConfigurationOptions.SUBLEAGUES || (options & DatabaseConfigurationOptions.SUBLEAGUES) == DatabaseConfigurationOptions.SUBLEAGUES) {
-				foreach(string subleague in database.GetLeague().subleagues) {
-					success = UpdateSubleague(subleague, database);
+			if(options == DatabaseConfigurationOptions.COMPLETE || (options & DatabaseConfigurationOptions.SUBLEAGUES) == DatabaseConfigurationOptions.SUBLEAGUES) {
+				foreach(string subleague in Database.GetLeague().subleagues) {
+					success = UpdateSubleague(subleague);
 					if(!success) {
 						OnDatabaseFailed?.Invoke();
 						return;
@@ -130,10 +136,10 @@ namespace blaseball.service {
 
 			// Division Information
 			if(options == DatabaseConfigurationOptions.COMPLETE || (options & DatabaseConfigurationOptions.DIVISIONS) == DatabaseConfigurationOptions.DIVISIONS) {
-				foreach(string subleagueID in database.GetSubleagueIDs()) {
-					BBSubleague subleague = database.GetSubleague(subleagueID);
+				foreach(string subleagueID in Database.GetSubleagueIDs()) {
+					BBSubleague subleague = Database.GetSubleague(subleagueID);
 					foreach(string division in subleague.divisions) {
-						success = UpdateDivision(division, database);
+						success = UpdateDivision(division);
 						if(!success) {
 							OnDatabaseFailed?.Invoke();
 							return;
@@ -147,10 +153,10 @@ namespace blaseball.service {
 
 			// Teams Information
 			if(options == DatabaseConfigurationOptions.COMPLETE || (options & DatabaseConfigurationOptions.TEAMS) == DatabaseConfigurationOptions.TEAMS) {
-				foreach(string divisionID in database.GetDivisionIDs()) {
-					BBDivision division = database.GetDivision(divisionID);
+				foreach(string divisionID in Database.GetDivisionIDs()) {
+					BBDivision division = Database.GetDivision(divisionID);
 					foreach(string teamID in division.teams) {
-						success = UpdateTeam(teamID, database);
+						success = UpdateTeam(teamID);
 						if(!success) {
 							OnDatabaseFailed?.Invoke();
 							return;
@@ -163,8 +169,8 @@ namespace blaseball.service {
 			// Players Information
 			if(options == DatabaseConfigurationOptions.COMPLETE || (options & DatabaseConfigurationOptions.PLAYERS) == DatabaseConfigurationOptions.PLAYERS) {
 			List<string> players = new List<string>();
-				foreach(string teamID in database.GetTeamIDs()) {
-					BBTeam team = database.GetTeam(teamID);
+				foreach(string teamID in Database.GetTeamIDs()) {
+					BBTeam team = Database.GetTeam(teamID);
 					
 					foreach(string playerID in team.lineup) {
 						players.Add(playerID);
@@ -180,7 +186,7 @@ namespace blaseball.service {
 					players.RemoveAt(0);
 
 					if(shortList.Count >= 32 || players.Count == 0) {
-						success = UpdatePlayers(shortList.ToArray(), database);
+						success = UpdatePlayers(shortList.ToArray(), Database);
 						if(!success) {
 							OnDatabaseFailed?.Invoke();
 							return;
@@ -192,16 +198,15 @@ namespace blaseball.service {
 			}
 
 			if(options == DatabaseConfigurationOptions.COMPLETE) {
-				database.lastUpdated = System.DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+				Database.lastUpdated = Helper.GetUnixTime();
 			}
+
+			Logger.Log("Live Database Downloaded. Saving Local Datablase");
+			Database.Save();
+			FileLoader.SetupStreamingAssets();
 			OnDatabaseCreated?.Invoke();
 
 
-		}
-
-		private void Log(string v)
-		{
-			Debug.Log($"{v}");
 		}
 
 		/// <summary>
@@ -209,16 +214,16 @@ namespace blaseball.service {
 		/// </summary>
 		/// <param name="subleague">ID of the subleague to get information on</param>
 		/// <returns>True if successful, False on a Failure</returns>
-		public bool UpdateSubleague(string subleague, IBlaseballDatabase database) {
+		public bool UpdateSubleague(string subleague) {
 			string subleagueInformation = Download($"https://blaseball.com/database/subleague?id={subleague}");
 		
 			if(subleagueInformation == "") {
 				return false;
 			}
 			BBSubleague SubleagueVO = JsonUtility.FromJson<BBSubleague>(subleagueInformation);
-			database.SetSubleague(SubleagueVO);
+			Database.SetSubleague(SubleagueVO);
 			
-			Log($"Subleague: {SubleagueVO.name}");
+			Logger.Log($"Subleague: {SubleagueVO.name}");
 			return true;
 		}
 
@@ -228,16 +233,16 @@ namespace blaseball.service {
 		/// </summary>
 		/// <param name="subleague">ID of the division to get information on</param>
 		/// <returns>True if successful, False on a Failure</returns>
-		public bool UpdateDivision(string divisionID, IBlaseballDatabase database) {
+		public bool UpdateDivision(string divisionID) {
 			string divisionInformation = Download($"https://www.blaseball.com/database/division?id={divisionID}");
 		
 			if(divisionInformation == "") {
 				return false;
 			}
 			BBDivision DivisionVO = JsonUtility.FromJson<BBDivision>(divisionInformation);
-			database.SetDivision(DivisionVO);
+			Database.SetDivision(DivisionVO);
 			
-			Log($"Division: {DivisionVO.name}");
+			Logger.Log($"Division: {DivisionVO.name}");
 			return true;
 		}
 		
@@ -245,15 +250,15 @@ namespace blaseball.service {
 		/// Get up to date division information from the Blaseball Datablase
 		/// </summary>
 		/// <returns>true if successful, false on a failure</returns>
-		public bool UpdateDivisions(IBlaseballDatabase database) {
+		public bool UpdateDivisions(IBlaseballDatabase Database) {
 			string divisionInformation = Download("https://blaseball.com/database/allDivisions");
 			if(divisionInformation == "") {
 				return false;
 			}
 			BBDivisionArray divisions = JsonUtility.FromJson<BBDivisionArray>("{\"divisions\":" + divisionInformation + "}");
 			foreach(BBDivision division in divisions.divisions) {
-				database.SetDivision(division);
-				Log($"Division: {division.name}");
+				Database.SetDivision(division);
+				Logger.Log($"Division: {division.name}");
 			}
 
 			return true;
@@ -261,7 +266,9 @@ namespace blaseball.service {
 
 		[Serializable]
 		internal class BBDivisionArray {
+			#pragma warning disable CS0649 // It is used. It's a partial json utilty class
 			public BBDivision[] divisions;
+			#pragma warning restore CS0649
 		}
 		
 
@@ -270,36 +277,35 @@ namespace blaseball.service {
 		/// </summary>
 		/// <param name="teamID">the ID of the team to get information on</param>
 		/// <returns>true if successful, false on a failure</returns>
-		public bool UpdateTeam(string teamID, IBlaseballDatabase database) {
+		public bool UpdateTeam(string teamID) {
 			string teamInformation = Download($"https://blaseball.com/database/team?id={teamID}");
 			if(teamInformation == "") {
 				return false;
 			}
 			BBTeam team = JsonUtility.FromJson<BBTeam>(teamInformation);
-			database.SetTeam(team);
-			Log($"Team: {team.fullName}");
+			Database.SetTeam(team);
+			Logger.Log($"Team: {team.fullName} {Helper.ToEmoji(team.emoji)}");// {char.ConvertFromUtf32(emoji)}");
 
 			return true;
 		}
 
-		public bool UpdatePlayer(string playerID, IBlaseballDatabase database) {
+		public bool UpdatePlayer(string playerID) {
 			string playerInformation = Download($"https://blaseball.com/database/players?ids={playerID}");
 			if(playerInformation == "") {
 				return false;
 			}
 			BBPlayer player = JsonUtility.FromJson<BBPlayer>(playerInformation);
-			database.SetPlayer(player);
-			Log($"Player: {player.name}");
+			Database.SetPlayer(player);
+			Logger.Log($"Player: {player.name}");
 			return true;
 		}
 
-		public bool UpdatePlayers(string[] playerIDs, IBlaseballDatabase database ){
+		public bool UpdatePlayers(string[] playerIDs, IBlaseballDatabase Database ){
 			string s = "";
 			for(int i = 0; i < playerIDs.Length; i++) {
 				s += playerIDs[i];
 				if(i != playerIDs.Length - 1) s+=",";
 			}
-			//Log($"Opening: https://blaseball.com/database/players?ids={s}");
 			string playerInformation = Download($"https://blaseball.com/database/players?ids={s}");
 			
 			if(playerInformation == "") {
@@ -308,16 +314,18 @@ namespace blaseball.service {
 			string loggedPlayers = "";
 			BBPlayersArray players = JsonUtility.FromJson<BBPlayersArray>("{\"players\":" + playerInformation + "}");
 			foreach(BBPlayer player in players.players) {
-				database.SetPlayer(player);
+				Database.SetPlayer(player);
 				loggedPlayers+=$"{player.name},";
 			}
-			Log($"Players: {loggedPlayers.Substring(0,loggedPlayers.Length-1)}");
+			Logger.Log($"Players: {loggedPlayers.Substring(0,loggedPlayers.Length-1)}");
 			return true;
 		}
 		
 		[Serializable]
 		internal class BBPlayersArray {
+			#pragma warning disable CS0649 // It is used. It's a partial json utilty class
 			public BBPlayer[] players;
+			#pragma warning restore CS0649
 		}
 		
 

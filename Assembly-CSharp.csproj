@@ -45,15 +45,17 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\ILB2Kayn20\Sources\ApplicationConfig.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\IBlaseballDatabase.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\JTDatabase.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\File\IFileLoader.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\File\IBlaseballFileLoader.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\File\JTFileLoader.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Helper.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\BBGame.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\BBSettings.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\GameRunner.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Server\IBlaseballResultsService.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Server\JTService.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\UI\IUILogger.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBDivision.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBGameState.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBLeague.cs" />
@@ -61,9 +63,10 @@
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBScheduleUpdate.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBSubleague.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTeam.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\MainController.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Messager.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\DatabaseLeaguesPanel.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\DatabaseScreen.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\LoggingPanel.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\TitleScreen.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Utility\Serializer.cs" />
      <None Include="Assets\Packages\System.Numerics.Vectors.4.4.0\useSharedDesignerContext.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
@@ -102,6 +105,7 @@
      <None Include="Assets\Packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.xml" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
      <None Include="Assets\Packages\System.Buffers.4.5.1\useSharedDesignerContext.txt" />
+     <None Include="Assets\TextMesh Pro\Fonts\Lora-OFL.txt" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -335,6 +339,21 @@
  </Reference>
  <Reference Include="System.Runtime.CompilerServices.Unsafe">
  <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Runtime.CompilerServices.Unsafe.4.5.3/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject-usage">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/Source/Usage/Zenject-usage.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Pdb">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Rocks">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -681,6 +700,24 @@
  <Reference Include="System.Xml.Serialization">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Zenject-Editor.csproj">
+      <Project>{871ED71D-7FC5-1E87-C1CF-BB364769CD05}</Project>
+      <Name>Zenject-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject-ReflectionBaking-Editor.csproj">
+      <Project>{AAB3D1AF-DBD3-7348-BB39-0676D6F54D3E}</Project>
+      <Name>Zenject-ReflectionBaking-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject-PoolMonitor-Editor.csproj">
+      <Project>{C78E8A06-5975-8D0F-F422-1F5BB00E4F87}</Project>
+      <Name>Zenject-PoolMonitor-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject.csproj">
+      <Project>{18CE2E79-DE94-3E2D-8075-38F4C04D04A4}</Project>
+      <Name>Zenject</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

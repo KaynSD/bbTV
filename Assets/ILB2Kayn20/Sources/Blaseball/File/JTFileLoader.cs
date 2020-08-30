@@ -5,27 +5,27 @@ using blaseball.db;
 using blaseball.runtime;
 using blaseball.vo;
 using UnityEngine;
+using Zenject;
 
 namespace blaseball.file {
 	[System.Serializable]
 	/// <summary>
 	// IBL Unity Streaming Assets Fileloader; Codename Jessica Telephone
 	/// </summary>
-	public class JTFileLoader : IFileLoader
+	public class JTFileLoader : IBlaseballFileLoader
 	{
-		public JTFileLoader(string rootDirectory = "")
-		{
-			if(rootDirectory == "") rootDirectory = BBSettings.FILEPATH;
-			Debug.Log($"RootDirectory = {rootDirectory}");
-			RootDirectory = rootDirectory;
-		}
+		[Inject]
+		public IBlaseballDatabase database;
+		[Inject]
+		public ApplicationConfig applicationConfig;
+		public JTFileLoader(){}
 
-		public string RootDirectory { get; }
 
-		public void SaveLog(IBlaseballDatabase database, string id, string json)
+		public void LogGame(string id, string json)
 		{
 			BBLeague league = database.GetLeague();
-			string logsPath = $"{RootDirectory}/blaseball/{league.id}/logs";
+			string logsPath = $"{applicationConfig.RootDirectory}/blaseball/{league.id}/logs";
+			if(!Directory.Exists(logsPath)) Directory.CreateDirectory(logsPath);
 
 			string fileContents = json;
 			string filePath = $"{logsPath}/{id}.json";
@@ -33,7 +33,8 @@ namespace blaseball.file {
 
 			if(File.Exists(filePath)) {
 				string existing = File.ReadAllText(filePath);
-				if(existing.Contains("Game over.")) return;
+				// Do not add to finalized games
+				if(existing.Contains("\"finalized\":true")) return;
 				
 				fileContents = existing.Insert(existing.Length - 2, $",{fileContents}");
 
@@ -45,12 +46,22 @@ namespace blaseball.file {
 			File.WriteAllText(filePath, fileContents);
 		}
 
-		public void SetupStreamingAssets(IBlaseballDatabase database)
+		public void LogRawData(string id, string content) {
+			string rawPath = $"{applicationConfig.RootDirectory}/raw";
+			if(!Directory.Exists(rawPath)) Directory.CreateDirectory(rawPath);
+
+			string filePath = $"{rawPath}/{id}.log";
+
+			File.WriteAllText(filePath, content);
+
+		}
+
+		public void SetupStreamingAssets()
 		{
 			// Setup basics...
-			if(!Directory.Exists(RootDirectory)) Directory.CreateDirectory(RootDirectory);
+			if(!Directory.Exists(applicationConfig.RootDirectory)) Directory.CreateDirectory(applicationConfig.RootDirectory);
 
-			string OSPath = $"{RootDirectory}/blaseball";
+			string OSPath = $"{applicationConfig.RootDirectory}/blaseball";
 			if(!Directory.Exists(OSPath)) Directory.CreateDirectory(OSPath);
 
 			BBLeague league = database.GetLeague();
@@ -60,14 +71,12 @@ namespace blaseball.file {
 			string divisionPath = $"{leaguePath}/division";
 			string teamPath = $"{leaguePath}/team";
 			string playerPath = $"{leaguePath}/player";
-			string logsPath = $"{leaguePath}/logs";
 
 			if(!Directory.Exists(leaguePath)) Directory.CreateDirectory(leaguePath);
 			if(!Directory.Exists(subleaguePath)) Directory.CreateDirectory(subleaguePath);
 			if(!Directory.Exists(divisionPath)) Directory.CreateDirectory(divisionPath);
 			if(!Directory.Exists(teamPath)) Directory.CreateDirectory(teamPath);
 			if(!Directory.Exists(playerPath)) Directory.CreateDirectory(playerPath);
-			if(!Directory.Exists(logsPath)) Directory.CreateDirectory(logsPath);
 
 			// Subleagues
 			List<string> textFileContents = new List<string>();
@@ -120,32 +129,30 @@ namespace blaseball.file {
 			}
 			CreateTextFile(textFileContents, playerPath);
 
-		}
+			void CreateTextFile(List<string> content, string directory)
+			{
+				content.Sort();
+				string fileContents = "";
+				for(int i = 0; i < content.Count; i++) {
+					fileContents += content[i] + "\n";
+				}
 
-		private string StarRating(float v)
-		{
-			string txt = "";
-			int halfstars = Mathf.RoundToInt(v * 10);
-			while(halfstars >= 2) {
-				txt += "\u2605";
-				halfstars -= 2;
-			}
-			if(halfstars == 1) {
-				txt += "\u00BD";
-			}
-			return txt;
-		}
-
-		private void CreateTextFile(List<string> textFileContents, string directory)
-		{
-			textFileContents.Sort();
-			string fileContents = "";
-			for(int i = 0; i < textFileContents.Count; i++) {
-				fileContents += textFileContents[i] + "\n";
+				File.WriteAllText($"{directory}/index.tsv", fileContents);
 			}
 
-			File.WriteAllText($"{directory}/index.tsv", fileContents);
+			string StarRating(float v)
+			{
+				string txt = "";
+				int halfstars = Mathf.RoundToInt(v * 10);
+				while(halfstars >= 2) {
+					txt += "\u2605";
+					halfstars -= 2;
+				}
+				if(halfstars == 1) {
+					txt += "\u00BD";
+				}
+				return txt;
+			}
 		}
-
 	}
 }

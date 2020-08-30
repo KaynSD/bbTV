@@ -11,9 +11,8 @@ namespace blaseball.service {
 		/// no games are running) to do your part to keep the site functional
 		/// </summary>
 		/// <param name="league">The league ID to get from blaseball.com; leave blank to use the default</param>
-		/// <param name="database">The local database parameter to write data to. The service is not responsible for SAVING this data</param>
 		/// <param name="options">Options; send in COMPLETE to scrape all the data, or mix and match different parameters to only update specific parts based on what knowledge the database already has</param>
-		void BuildDatabase(string league, IBlaseballDatabase database, DatabaseConfigurationOptions options);
+		void BuildDatabase(string league, DatabaseConfigurationOptions options);
 		/// <summary>
 		/// Connect to the Blaseball SSE Service
 		/// </summary>

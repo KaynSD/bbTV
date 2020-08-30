@@ -8,7 +8,7 @@ namespace blaseball.db {
 		/// When the database was Last Cleaned and Updated
 		/// </summary>
 		/// <value>The last time a complete server scrape was completed, in Unix time</value>
-		double lastUpdated {get; set;}
+		int lastUpdated {get; set;}
 
 		/// <summary>
 		/// Get the League inside the database connected to this endpoint
@@ -102,11 +102,16 @@ namespace blaseball.db {
 		void SetPlayer(BBPlayer player);
 
 		/// <summary>
+		/// Load this database from the Application Config location
+		/// </summary>
+		/// <returns>True if loaded, false otherwise</returns>
+		bool Load();
+
+		/// <summary>
 		/// Save this database to file
 		/// </summary>
-		/// <param name="filepath">The absolute filepath to save</param>
 		/// <returns>True if saved, false otherwise</returns>
-		bool Save(string filepath);
+		bool Save();
 
 	}
 }

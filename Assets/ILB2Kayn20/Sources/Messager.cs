@@ -18,6 +18,7 @@ public class Messager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		/*
 		BBSettings.FILEPATH = "";
 		gameRunner = new GameRunner();
 
@@ -36,7 +37,7 @@ public class Messager : MonoBehaviour
 		//service.BuildDatabase("", database, DatabaseConfigurationOptions.LEAGUE | DatabaseConfigurationOptions.TEAMS);
 		service.Connect();
 
-		
+		*/
 	}
 
 	private void OnUpdate(BBGameState gameState)
@@ -47,7 +48,6 @@ public class Messager : MonoBehaviour
 	private void OnFinish()
 	{
 		Debug.Log("Dictionary finished");
-		//database.Save("C:/Users/Keith Evans/Desktop/wafc.blbd");
 	}
 
 	private void OnFailed()
