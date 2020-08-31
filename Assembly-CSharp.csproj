@@ -52,7 +52,28 @@
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\File\JTFileLoader.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Helper.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\BBGame.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\BBPlaybook.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\GameRunner.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\BBAbstractPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBDrawsAWalkPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBFieldersChoice.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBHomeRunPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBRunsPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBSacrificePlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBStealsBasePlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Changeups\BBBatterAtPlatePlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Changeups\BBBottomOfInningPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Changeups\BBTopOfInningPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\GameStartAndEnd\GameOverPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\GameStartAndEnd\StartGamePlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBCaughtStealingPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBFlyoutPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBGroundOutPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBStrikeOutPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\BBBallPlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\BBFoulBall.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\BBStrikePlay.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\UnknownPlay.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Server\IBlaseballResultsService.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Server\JTService.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\UI\IUILogger.cs" />
@@ -63,8 +84,8 @@
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBScheduleUpdate.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBSubleague.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTeam.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\GameDemonstration.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\MainController.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Messager.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\LoggingPanel.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\TitleScreen.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Utility\Serializer.cs" />
@@ -75,6 +96,7 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
      <None Include="Assets\Packages\System.Reflection.Emit.ILGeneration.4.7.0\lib\netstandard2.0\System.Reflection.Emit.ILGeneration.xml" />
      <None Include="Assets\Packages\System.Numerics.Vectors.4.4.0\version.txt" />
+     <None Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\todo.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\Packages\System.Memory.4.5.4\lib\netstandard2.0\System.Memory.xml" />
      <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\useSharedDesignerContext.txt" />
@@ -89,8 +111,10 @@
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
      <None Include="Assets\Packages\System.Numerics.Vectors.4.4.0\lib\netstandard2.0\System.Numerics.Vectors.xml" />
+     <None Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\todo.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
      <None Include="Assets\Packages\System.Reflection.Emit.Lightweight.4.7.0\useSharedDesignerContext.txt" />
+     <None Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Oddness\todo.txt" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <None Include="Assets\Packages\System.Memory.4.5.4\useSharedDesignerContext.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
@@ -340,20 +364,20 @@
  <Reference Include="System.Runtime.CompilerServices.Unsafe">
  <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Runtime.CompilerServices.Unsafe.4.5.3/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
  </Reference>
- <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
- <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
- </Reference>
  <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
  <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
  </Reference>
- <Reference Include="Zenject-usage">
- <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/Source/Usage/Zenject-usage.dll</HintPath>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
  </Reference>
  <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Pdb">
  <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Rocks">
  <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject-usage">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/Source/Usage/Zenject-usage.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

@@ -15,6 +15,8 @@ public class MainController : MonoInstaller
 	ApplicationConfig configuration;
 	public override void InstallBindings() {
 		configuration = new ApplicationConfig();
+		configuration.RootDirectory = "C:/Users/Keith Evans/Desktop/blaseball/";
+
 		Container.Bind<ApplicationConfig>().FromInstance(configuration).AsSingle();
 
 		Container.Bind<IUILogger>().FromComponentInNewPrefabResource("Logging Panel").AsSingle().NonLazy();
@@ -23,7 +25,8 @@ public class MainController : MonoInstaller
 		Container.Bind<IBlaseballFileLoader>().To<JTFileLoader>().FromNew().AsSingle().NonLazy();
 		Container.Bind<IBlaseballDatabase>().To<JTDatabase>().FromNew().AsSingle().NonLazy();
 		Container.Bind<IBlaseballResultsService>().To<JTService>().FromNew().AsSingle().NonLazy();
-		Container.Bind<GameRunner>().FromNew().AsSingle().NonLazy();
+		Container.Bind<GameRunner>().FromNew().AsSingle().Lazy();
+		Container.Bind<BBPlaybook>().FromNew().AsSingle().Lazy();
 	}
 
 	public void OnResolved() {
