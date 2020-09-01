@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Text.RegularExpressions;
+using blaseball.service;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace blaseball.ui {
 	public class LoggingPanel : MonoBehaviour, IUILogger
 	{
+
+		[Inject] IBlaseballResultsService service;
 		string textToAppend = "";
 		public TextMeshProUGUI text;
 		public ScrollRect scrollRect;
@@ -35,6 +39,11 @@ namespace blaseball.ui {
 
 			StartCoroutine(ScrollAtEndOfNextFrame());
 
+		}
+
+		void OnDestroy() {
+			Debug.Log("Disconnecting Service!");
+			service.Disconnect();
 		}
 
 		public IEnumerator ScrollAtEndOfNextFrame() {

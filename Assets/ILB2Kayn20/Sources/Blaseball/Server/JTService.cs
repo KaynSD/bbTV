@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using blaseball.db;
 using blaseball.file;
+using blaseball.runtime;
 using blaseball.ui;
 using blaseball.vo;
 using EvtSource;
@@ -16,25 +17,22 @@ using Zenject;
 
 namespace blaseball.service {
 
-	public delegate void BlaseballDatabaseResult();
 	public class JTService : IBlaseballResultsService
 	{
 		// IBL SSE Service; Codename Jessica Telephone
 		// Valid for Season 4
 
-		[Inject]
-		public IBlaseballDatabase Database;
-		[Inject]
-		public IBlaseballFileLoader FileLoader;
-		[Inject]
-		public ApplicationConfig ApplicationConfig;
-		[Inject]
-		public IUILogger Logger;
+		[Inject]	public IBlaseballDatabase Database;
+		[Inject]	public IBlaseballFileLoader FileLoader;
+		[Inject]	public ApplicationConfig ApplicationConfig;
+		[Inject]	public IUILogger Logger;
+		[Inject]	public GameRunner GameRunner;
 
 		public JTService(){}
 
-		public BlaseballDatabaseResult OnDatabaseCreated;
-		public BlaseballDatabaseResult OnDatabaseFailed;
+		public BlaseballDatabaseResult OnDatabaseCreated {get; set;}
+		public BlaseballDatabaseResult OnDatabaseFailed {get; set;}
+		public BlaseballDatabaseResult OnIncomingData {get; set;}
 
 		EventSourceReader bbConnection;
 
@@ -65,16 +63,25 @@ namespace blaseball.service {
 
 		private void Parse(string message)
 		{
+			Logger.Log("Incoming Packet...");
 			FileLoader.LogRawData("raw", message);
 			JObject jsonBlob = JObject.Parse(message);
 			
 			string msg = (jsonBlob["value"]["games"].ToString());
 			BBScheduleUpdate Update = JsonUtility.FromJson<BBScheduleUpdate>(msg);
-
 			foreach(BBGameState state in Update.schedule) {
 				OnGameUpdateRecieved?.Invoke(state);
 				FileLoader.LogGame(state.id, JsonUtility.ToJson(state));
+				GameRunner.AddGameUpdate(state);
 			}
+
+			BBTomorrowsGames Forecast = JsonUtility.FromJson<BBTomorrowsGames>(msg);
+			foreach(BBGameState state in Forecast.tomorrowSchedule) {
+				OnGameUpdateRecieved?.Invoke(state);
+				GameRunner.AddTommorowsGame(state);
+			}
+
+			OnIncomingData?.Invoke();
 		}
 
 		public void Disconnect()

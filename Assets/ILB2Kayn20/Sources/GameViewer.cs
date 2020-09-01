@@ -1,35 +1,34 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using blaseball.db;
 using blaseball.runtime;
 using blaseball.runtime.events;
 using blaseball.ui;
 using blaseball.vo;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
-public class GameDemonstration : MonoBehaviour
+public class GameViewer : MonoBehaviour
 {
+	[Inject] public GameRunner gameRunner; 
 	[Inject] public IUILogger Logger;
-	[Inject] public BBPlaybook Playbook;
 	[Inject] public IBlaseballDatabase Database;
-	void Start() {
-		Database.Load();
+	[Inject] public BBPlaybook Playbook;
 
-		// Sample match; Mills vs Firefighters, Season 4 Playoffs. Not the TDHAGOTET one sadly
-		var gameFile = Resources.Load<TextAsset>("d48564ae-6013-412c-8e2b-21fa73245b08");
+	protected BBGame game;
 	
-		BBReplay replay = JsonUtility.FromJson<BBReplay>(gameFile.text);
+	void Start()
+	{
 
-		BBGame game = new BBGame(replay.value[0].id);
+		game = gameRunner.getFocusedGame();
+		if(game == null){
+			SceneManager.LoadScene("Title Scene");
+			return;
+		}
 
 		game.OnUpdateReady += LogUpdate;
-		
-		for(int i = 0; i < replay.value.Length; i++) {
-			game.AddUpdate(replay.value[i]);
-		}
 	}
 
 	private void LogUpdate(BBGameState gameState)
@@ -54,10 +53,10 @@ public class GameDemonstration : MonoBehaviour
 		}
 		//Logger.Log(gameState.lastUpdate);
 	}
-
+	
 	private void HandleTechnicalDifficulties(BBAbstractPlay caseFail)
 	{
-		//Logger.Log($"Whoops we appear to be experiencing technical difficulties!\nbut what I can tell you is {caseFail.gameState.lastUpdate}");
+		Logger.Log($"UNHANDLED: {caseFail.gameState.lastUpdate}");
 	}
 
 	private void HandleStartGame(StartGamePlay play)
@@ -94,6 +93,4 @@ public class GameDemonstration : MonoBehaviour
 		BBTeam team = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		Logger.Log($"Batting now for the {team.nickname} is {batter.name}, a {Math.Round(BBPlayer.BatterRating(batter) * 10) / 2} star batter");
 	}
-
 }
-

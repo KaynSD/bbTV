@@ -2,6 +2,7 @@ using blaseball.db;
 using blaseball.vo;
 
 namespace blaseball.service {
+	public delegate void BlaseballDatabaseResult();
 	public interface IBlaseballResultsService {
 
 		/// <summary>
@@ -26,6 +27,10 @@ namespace blaseball.service {
 		/// </summary>
 		/// <value>Game Updated (relevant ID attached)</value>
 		BBGameStateDelegate OnGameUpdateRecieved {get; set;}
+
+		BlaseballDatabaseResult OnDatabaseCreated {get; set;}
+		BlaseballDatabaseResult OnDatabaseFailed {get; set;}
+		BlaseballDatabaseResult OnIncomingData {get; set;}
 	}
 
 	public enum DatabaseConfigurationOptions {

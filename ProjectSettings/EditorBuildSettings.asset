@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ILB2Kayn20/Scenes/Title Scene.unity
     guid: 2c2967850b9269543921be79dc220718
+  - enabled: 1
+    path: Assets/ILB2Kayn20/Scenes/ViewerScene.unity
+    guid: e9462c3bdecb6a64c87a19d0aaee705b
   m_configObjects: {}

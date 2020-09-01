@@ -32,5 +32,20 @@ namespace blaseball {
 		{
 			return (int)System.DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 		}
+
+		public enum Weather {
+			Void,
+			Sunny, Overcast, Rainy, Sandstorm, Snowy, 
+			Acidic, Eclipse, Glitter, Bloodwind, Peanuts,
+			Birds, Feedback, Reverb, 
+			
+
+			Unknown
+		}
+		internal static Weather GetWeather(int weather)
+		{
+			if(weather >= 0 && weather <= 13) return (Weather)weather;
+			return Weather.Unknown;
+		}
 	}
 }

@@ -81,11 +81,15 @@
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBGameState.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBLeague.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBPlayer.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBReplay.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBScheduleUpdate.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBSubleague.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTeam.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTomorrowsGames.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\GameDemonstration.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\GameViewer.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\MainController.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\GameButtonBehaviour.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\LoggingPanel.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\TitleScreen.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Utility\Serializer.cs" />

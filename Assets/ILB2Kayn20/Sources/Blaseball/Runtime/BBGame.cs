@@ -10,37 +10,31 @@ namespace blaseball.runtime {
 		public BBGame(string gameID)
 		{
 			GameID = gameID;
-			gameUpdates = new Queue<BBGameState>();
 			history = new List<BBGameState>();
 		}
 		public string GameID;
 		public bool isRunning;
-		protected Queue<BBGameState> gameUpdates;
 		public List<BBGameState> history;
+		public BBGameState current {get; protected set;}
 
 		public BBGameStateDelegate OnUpdateReady;
 
 		public void AddUpdate(BBGameState update) {
 			if(update.id != GameID) return;
-
-			gameUpdates.Enqueue(update);
-			history.Add(update);
-			if(gameUpdates.Count == 1 && !locked) {
-				DispatchUpdate();
-			}
-
-		}
-
-		public void DispatchUpdate()
-		{
-			if(gameUpdates.Count < 1) return;
-			locked = true;
-			BBGameState nextState = gameUpdates.Dequeue();
-
-			OnUpdateReady?.Invoke(nextState);
-			locked = false;
 			
+			history.Add(update);
+			current = update;
+			OnUpdateReady?.Invoke(update);
 		}
+
+		public BBGameState GetUpdate(int index)
+		{
+			if(index < 0) return history[history.Count - 1];
+			if(history.Count < index) return history[index];
+			return null;
+		}
+
+		public int HistoryLength => history.Count;
 
 		private bool locked = false;
 	}
