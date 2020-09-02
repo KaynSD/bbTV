@@ -78,7 +78,7 @@ namespace blaseball.service {
 			BBTomorrowsGames Forecast = JsonUtility.FromJson<BBTomorrowsGames>(msg);
 			foreach(BBGameState state in Forecast.tomorrowSchedule) {
 				OnGameUpdateRecieved?.Invoke(state);
-				GameRunner.AddTommorowsGame(state);
+				GameRunner.AddGameUpdate(state);
 			}
 
 			OnIncomingData?.Invoke();

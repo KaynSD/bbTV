@@ -18,21 +18,53 @@ public class GameViewer : MonoBehaviour
 	[Inject] public BBPlaybook Playbook;
 
 	protected BBGame game;
+
+	protected Queue<BBGameState> queue;
+
+	protected bool ReadyToProcessNewPlay = false;
+	protected BBGameState currentState;
 	
 	void Start()
 	{
 
 		game = gameRunner.getFocusedGame();
+		queue = new Queue<BBGameState>();
+
 		if(game == null){
 			SceneManager.LoadScene("Title Scene");
 			return;
 		}
 
+		queue = new Queue<BBGameState>();
+		BBGameState currentState = game.GetUpdate();
+		if(currentState != null) queue.Enqueue(currentState);
+
 		game.OnUpdateReady += LogUpdate;
+		ReadyToProcessNewPlay = true;
+	}
+
+	void Update() {
+		// If ready to process a new play
+		if(ReadyToProcessNewPlay) {
+			if(queue.Count > 0) {
+				ReadyToProcessNewPlay = false;
+				ProcessPlay(queue.Dequeue());
+			}
+		} else {
+			// Why? Probably because we're playing a movie...
+
+			// if current movie is over, play idle animations of crowd and stuff
+		}
 	}
 
 	private void LogUpdate(BBGameState gameState)
 	{
+		queue.Enqueue(gameState);
+	}
+
+	private void ProcessPlay(BBGameState gameState) {
+		// Interrupt any current animation; it'll be idle probably
+
 		BBAbstractPlay play = Playbook.GetPlayFromState(gameState);
 
 		switch(play) {
@@ -52,6 +84,13 @@ public class GameViewer : MonoBehaviour
 			break;
 		}
 		//Logger.Log(gameState.lastUpdate);
+
+		StartCoroutine("ArbitraryWait");
+	}
+	
+	private IEnumerator ArbitraryWait () {
+		yield return new WaitForSeconds(UnityEngine.Random.Range(2.0f, 3.0f));
+		ReadyToProcessNewPlay = true;
 	}
 	
 	private void HandleTechnicalDifficulties(BBAbstractPlay caseFail)

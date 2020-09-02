@@ -43,23 +43,12 @@ public class GameButtonBehaviour : MonoBehaviour
 	bool setup = false;
 	void Update() {
 		if(!setup && service != null) {
-			setup = true;
-			service.OnGameUpdateRecieved += GameUpdate;
 
 			foreach(KeyValuePair<string, BBGame> kvp in gameRunner.Games) {
 				if(kvp.Key == GameID) {
-					Debug.Log($"Setting up Current Game: {GameID}");
-					gameType = GameType.CURRENT;
+					service.OnGameUpdateRecieved += GameUpdate;
 					GameUpdate(kvp.Value.current);
-					return;
-				}
-			}
-
-			foreach(KeyValuePair<string, BBGame> kvp in gameRunner.TommorowsGames) {
-				if(kvp.Key == GameID) {
-					Debug.Log($"Setting up Future Game: {GameID} : {kvp.Value.current.id}");
-					gameType = GameType.FORECAST;
-					GameUpdate(kvp.Value.current);
+					setup = true;
 					return;
 				}
 			}

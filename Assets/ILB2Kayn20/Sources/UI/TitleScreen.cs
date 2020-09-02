@@ -24,9 +24,7 @@ public class TitleScreen : MonoBehaviour
 	public Transform futureGameList;
 	public Transform historicalGameList;
 
-	List<GameButtonBehaviour> forecastGames; 
 	List<GameButtonBehaviour> currentGames;
-	List<GameButtonBehaviour> historicalGames;
 
 	public List<GameObject> AllPanels;
 
@@ -37,9 +35,7 @@ public class TitleScreen : MonoBehaviour
 		service.Connect();
 		lastDatabaseUpdateText.SetText($"Last Cleaned: {Helper.GetLastUpdatedText(database.lastUpdated)}");
 	
-		forecastGames = new List<GameButtonBehaviour>();
 		currentGames = new List<GameButtonBehaviour>();
-		historicalGames = new List<GameButtonBehaviour>();
 
 		HideAllPanels();
 		RefreshDisplay();
@@ -88,37 +84,44 @@ public class TitleScreen : MonoBehaviour
 
 	private void RefreshDisplay() {
 		currentGames.RemoveAll(x => x == null);
-		forecastGames.RemoveAll(x => x == null);
 
 		foreach(KeyValuePair<string, BBGame> currentGame in gameRunner.Games) {
 			string gameID = currentGame.Value.GameID;
-
-			if(!currentGame.Value.current.gameComplete) {
-				if(currentGames.Find(x => x.GameID == gameID)) continue;
-				
-				GameObject newGameButton = Instantiate(GameButtonPrefab);
-				newGameButton.transform.SetParent(currentGameList);
-				GameButtonBehaviour gbb = newGameButton.GetComponent<GameButtonBehaviour>();
-				gbb.GameID = gameID;
-				currentGames.Add(gbb);
-
-				gbb.self.onClick.AddListener(() => ViewGame(gbb));
-			}
-		}
-		foreach(KeyValuePair<string, BBGame> forecastGame in gameRunner.TommorowsGames) {
-			string gameID = forecastGame.Value.GameID;
-
-			if(forecastGame.Value.current.gameStart) continue;
 			if(currentGames.Find(x => x.GameID == gameID)) continue;
-			
-			GameObject newGameButton = Instantiate(GameButtonPrefab);
-			newGameButton.transform.SetParent(futureGameList);
-			GameButtonBehaviour gbb = newGameButton.GetComponent<GameButtonBehaviour>();
-			currentGames.Add(gbb);
-			gbb.GameID = gameID;
 
+			BBGameState state = currentGame.Value.current;
+
+			GameButtonBehaviour.GameType gametype = GameButtonBehaviour.GameType.FORECAST;
+			if(state.gameComplete) {
+				gametype = GameButtonBehaviour.GameType.HISTORICAL;
+			} else if(state.gameStart) {
+				gametype = GameButtonBehaviour.GameType.CURRENT;
+			}
+
+			GameObject newGameButton = Instantiate(GameButtonPrefab);
+			GameButtonBehaviour gbb = newGameButton.GetComponent<GameButtonBehaviour>();
+			gbb.gameType = gametype;
+			gbb.GameID = gameID;
 			gbb.self.onClick.AddListener(() => ViewGame(gbb));
+
+			switch(gametype) {
+				case GameButtonBehaviour.GameType.CURRENT :
+					newGameButton.transform.SetParent(currentGameList);
+					break;
+				case GameButtonBehaviour.GameType.FORECAST :
+					newGameButton.transform.SetParent(futureGameList);
+					break;
+				default :
+					newGameButton.transform.SetParent(historicalGameList);
+					break;
+					
+
+			}
+
+			currentGames.Add(gbb);
+
 		}
+
 	}
 
 	public void DownloadDatabase() {
