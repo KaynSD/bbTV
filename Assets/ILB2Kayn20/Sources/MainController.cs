@@ -15,6 +15,7 @@ public class MainController : MonoInstaller
 	ApplicationConfig configuration;
 	public override void InstallBindings() {
 		configuration = new ApplicationConfig();
+		configuration.RootDirectory = "C:/Users/Keith Evans/Desktop/blaseball/";
 
 		Container.Bind<ApplicationConfig>().FromInstance(configuration).AsSingle();
 
