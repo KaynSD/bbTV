@@ -95,7 +95,7 @@ public class GameViewer : MonoBehaviour
 	
 	private void HandleTechnicalDifficulties(BBAbstractPlay caseFail)
 	{
-		Logger.Log($"UNHANDLED: {caseFail.gameState.lastUpdate}");
+		Logger.Log($"UNHANDLED: {caseFail.gameState.lastUpdate} ({caseFail.ToString()})");
 	}
 
 	private void HandleStartGame(StartGamePlay play)
