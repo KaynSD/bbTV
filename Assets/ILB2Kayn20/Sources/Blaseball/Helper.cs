@@ -42,10 +42,22 @@ namespace blaseball {
 
 			Unknown
 		}
-		internal static Weather GetWeather(int weather)
+
+		public static string GetStarRating(float rawPlayerValue) {
+			int valueInHalfStars = Mathf.RoundToInt(rawPlayerValue * 10f);
+			string r = "";
+			for(int i = 0; i < valueInHalfStars / 2; i++) {
+				r+="★";
+			}
+			if(valueInHalfStars % 2 == 1) r+= "½";
+			return r;
+		}
+		public static Weather GetWeather(int weather)
 		{
 			if(weather >= 0 && weather <= 13) return (Weather)weather;
 			return Weather.Unknown;
 		}
+
+		
 	}
 }

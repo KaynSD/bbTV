@@ -10,6 +10,8 @@ namespace blaseball.runtime {
 		public string GameIDFocus = "";
 		public Dictionary<string, BBGame> Games;
 
+		public int CurrentIndex = -1;
+
 		public GameRunner()
 		{
 			Games = new Dictionary<string, BBGame>();
@@ -37,5 +39,6 @@ namespace blaseball.runtime {
 		public void CleanCurrentGames(){
 			Games.Clear();
 		}
+
 	}
 }

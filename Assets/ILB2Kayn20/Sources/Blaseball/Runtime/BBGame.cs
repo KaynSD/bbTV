@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using blaseball.db;
 using blaseball.vo;
+using UnityEngine;
 
 namespace blaseball.runtime {
 	[System.Serializable]
@@ -52,7 +53,8 @@ namespace blaseball.runtime {
 		public BBGameState GetUpdate(int index = -1)
 		{
 			if(index < 0) index = history.Count - 1;
-			if(history.Count < index) return history[index];
+			Debug.Log($"Getting index [{index} / {history.Count}]");
+			if(history.Count > index) return history[index];
 			return null;
 		}
 

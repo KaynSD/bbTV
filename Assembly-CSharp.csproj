@@ -45,6 +45,10 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\MajorItemsChiron.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\PlayerInformationChiron.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\TVCameraGraphicsMasterControl.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\TechnicalDifficultiesChiron.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\ApplicationConfig.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\IBlaseballDatabase.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\JTDatabase.cs" />
@@ -92,6 +96,7 @@
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\GameButtonBehaviour.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\LoggingPanel.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\TitleScreen.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Utility\FindDeepChild.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Utility\Serializer.cs" />
      <None Include="Assets\Packages\System.Numerics.Vectors.4.4.0\useSharedDesignerContext.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
@@ -137,6 +142,9 @@
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Cinemachine">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.VSCode.Editor">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
@@ -155,17 +163,14 @@
  <Reference Include="Unity.Rider.Editor">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="com.unity.cinemachine.editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.TextMeshPro">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
- </Reference>
- <Reference Include="Cinemachine">
- <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
- </Reference>
- <Reference Include="com.unity.cinemachine.editor">
- <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

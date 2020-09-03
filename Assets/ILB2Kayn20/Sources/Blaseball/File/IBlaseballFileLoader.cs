@@ -1,4 +1,6 @@
+using System.Collections;
 using blaseball.db;
+using UnityEngine.UI;
 
 namespace blaseball.file {
 	/// <summary>
@@ -31,5 +33,7 @@ namespace blaseball.file {
 		/// and access information from in future
 		/// </summary>
 		void SetupStreamingAssets();
+
+		string GetTeamTexturePath(string teamID);
 	}
 }

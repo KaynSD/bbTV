@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using blaseball.db;
 using blaseball.runtime;
 using blaseball.vo;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 using Zenject;
 
 namespace blaseball.file {
@@ -54,6 +57,12 @@ namespace blaseball.file {
 
 			File.WriteAllText(filePath, content);
 
+		}
+
+		public string GetTeamTexturePath(string teamID)
+		{
+			BBLeague league = database.GetLeague();
+			return $"file://{applicationConfig.RootDirectory}blaseball/{league.id}/team/{teamID}/logo.png";
 		}
 
 		public void SetupStreamingAssets()

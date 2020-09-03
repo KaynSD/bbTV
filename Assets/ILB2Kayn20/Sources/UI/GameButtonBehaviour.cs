@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using blaseball;
 using blaseball.db;
+using blaseball.file;
 using blaseball.runtime;
 using blaseball.service;
 using blaseball.vo;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using Zenject;
 
@@ -16,6 +18,7 @@ public class GameButtonBehaviour : MonoBehaviour
 	[Inject] public IBlaseballDatabase database;
 	[Inject] public IBlaseballResultsService service;
 	[Inject] public GameRunner gameRunner;
+	[Inject] public IBlaseballFileLoader fileLoader;
 
 	public TextMeshProUGUI headerText;
 	public TextMeshProUGUI mainText;
@@ -47,6 +50,7 @@ public class GameButtonBehaviour : MonoBehaviour
 			foreach(KeyValuePair<string, BBGame> kvp in gameRunner.Games) {
 				if(kvp.Key == GameID) {
 					service.OnGameUpdateRecieved += GameUpdate;
+					StartCoroutine(SetupImages(kvp.Value.current.homeTeam, kvp.Value.current.awayTeam));
 					GameUpdate(kvp.Value.current);
 					setup = true;
 					return;
@@ -58,7 +62,35 @@ public class GameButtonBehaviour : MonoBehaviour
 		}
 	}
 
+	IEnumerator SetupImages(string homeID, string awayID) {
+		UnityWebRequest www = new UnityWebRequest(fileLoader.GetTeamTexturePath(homeID));
+		www.downloadHandler = new DownloadHandlerTexture();
+		yield return www.SendWebRequest();
+
+		if(www.isNetworkError || www.isHttpError) {
+			// No op, but error with home team
+		} else {
+			homeTeam.material = new Material(homeTeam.material.shader);
+			homeTeam.color = Color.white;
+			homeTeam.material.SetTexture("_MainTex", ((DownloadHandlerTexture)www.downloadHandler).texture);
+		}
+
+		www = new UnityWebRequest(fileLoader.GetTeamTexturePath(awayID));
+		www.downloadHandler = new DownloadHandlerTexture();
+		yield return www.SendWebRequest();
+
+		if(www.isNetworkError || www.isHttpError) {
+			// No op, but error with home team
+		} else {
+			awayTeam.material = new Material(homeTeam.material.shader);
+			awayTeam.color = Color.white;
+			awayTeam.material.SetTexture("_MainTex", ((DownloadHandlerTexture)www.downloadHandler).texture);
+		}
+	}
+
 	void GameUpdate(BBGameState newData) {
+
+
 		// Only interested in my own data...
 		if(newData.id != GameID) return;
 
