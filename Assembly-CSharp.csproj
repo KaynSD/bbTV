@@ -45,10 +45,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\MajorItemsChiron.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\PlayerInformationChiron.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\TVCameraGraphicsMasterControl.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Prefab\UI Elements\TechnicalDifficultiesChiron.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\ApplicationConfig.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\IBlaseballDatabase.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\JTDatabase.cs" />
@@ -95,6 +91,11 @@
      <Compile Include="Assets\ILB2Kayn20\Sources\MainController.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\GameButtonBehaviour.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\LoggingPanel.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\MajorItemsChiron.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\PlayerInformationChiron.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\RewindPanel.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\TVCameraGraphicsMasterControl.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\UI\TechnicalDifficultiesChiron.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\UI\TitleScreen.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Utility\FindDeepChild.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Utility\Serializer.cs" />

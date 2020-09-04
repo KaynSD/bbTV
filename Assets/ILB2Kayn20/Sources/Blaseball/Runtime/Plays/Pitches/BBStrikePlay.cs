@@ -26,7 +26,7 @@ namespace blaseball.runtime.events {
 			this.gameState = gameState;
 			Match match = lastUpdateMatches.Match(gameState.lastUpdate);
 			switch(match.Groups[1].Value){
-				case "swinging" : TypeOfStrike = Strike.SWINGING;
+				case "swinging" : TypeOfStrike = Strike.LOOKING;
 				break;
 				case "looking" : TypeOfStrike = Strike.SWINGING;
 				break;

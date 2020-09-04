@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class TVCameraGraphicsMasterControl : MonoBehaviour
 {
+	public RewindPanel rewindPanel;
 	public TechnicalDifficultiesChiron technicalDifficultiesChiron;
 	public PlayerInformationChiron playerInformationChiron;
 	public MajorItemsChiron majorItemsChiron;
@@ -14,6 +15,15 @@ public class TVCameraGraphicsMasterControl : MonoBehaviour
 		technicalDifficultiesChiron.Hide();
 		playerInformationChiron.Hide();
 		majorItemsChiron.Hide();
+	}
+	internal void EnableRewind()
+	{
+		rewindPanel.Show();
+	}
+
+	internal void DisableRewind()
+	{
+		rewindPanel.Disable();
 	}
 
 	public void ShowTechnicalDifficulties(string lastUpdate) {
@@ -50,4 +60,5 @@ public class TVCameraGraphicsMasterControl : MonoBehaviour
 		majorItemsChiron.ShowBase2(Array.IndexOf(state.basesOccupied, 1) > -1);
 		majorItemsChiron.ShowBase3(Array.IndexOf(state.basesOccupied, 2) > -1);
 	}
+
 }

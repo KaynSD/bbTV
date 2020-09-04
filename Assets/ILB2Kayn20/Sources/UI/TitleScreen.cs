@@ -44,10 +44,14 @@ public class TitleScreen : MonoBehaviour
 		//"d48564ae-6013-412c-8e2b-21fa73245b08";
 
 		// Temporary Historical Game
-		var gameFile = Resources.Load<TextAsset>("d48564ae-6013-412c-8e2b-21fa73245b08");
-		BBReplay replay = JsonUtility.FromJson<BBReplay>(gameFile.text);
-		for(int i = 0; i < replay.value.Length; i++) {
-			gameRunner.AddGameUpdate(replay.value[i]);
+		try {
+			var gameFile = Resources.Load<TextAsset>("d48564ae-6013-412c-8e2b-21fa73245b08");
+			BBReplay replay = JsonUtility.FromJson<BBReplay>(gameFile.text);
+			for(int i = 0; i < replay.value.Length; i++) {
+				gameRunner.AddGameUpdate(replay.value[i]);
+			}
+		} catch (Exception c) {
+			Debug.Log(c);
 		}
 
 	}
@@ -79,7 +83,6 @@ public class TitleScreen : MonoBehaviour
 		Debug.Log($"Loading Game: {button.GameID}");
 		service.OnIncomingData -= RefreshDisplay;
 		gameRunner.GameIDFocus = button.GameID;
-		gameRunner.CurrentIndex = -1;
 		SceneManager.LoadScene("ViewerScene");
 	}
 

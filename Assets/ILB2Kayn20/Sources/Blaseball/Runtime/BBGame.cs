@@ -14,7 +14,19 @@ namespace blaseball.runtime {
 			history = new List<BBGameState>();
 		}
 		public string GameID;
-		public bool isRunning;
+
+		/// <summary>
+		/// If the game is historical (in that it has been completed), returns true
+		/// This controls whether a replay scrobber is shown or if the game is treated
+		/// as such
+		/// </summary>
+		/// <value></value>
+		public bool isRunning {get {
+			if(history.Count > 0) {
+				if(history[history.Count - 1].gameComplete) return false;
+			}
+			return true;
+		}}
 		public List<BBGameState> history;
 		public BBGameState current {get; protected set;}
 

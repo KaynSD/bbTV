@@ -38,7 +38,11 @@ namespace blaseball.service {
 
 		public BBGameStateDelegate OnGameUpdateRecieved { get; set; }
 
+		public bool isConnected = false;
+
 		public void Connect() {
+
+			if(isConnected) return; // Already connected...
 
 			if(bbConnection == null) {
 				bbConnection = new EventSourceReader(new Uri(ApplicationConfig.BlaseballServiceSSEPath));
@@ -53,11 +57,13 @@ namespace blaseball.service {
 
 		private void OnDisconnect(object sender, DisconnectEventArgs e)
 		{
+			isConnected = false;
 			bbConnection.Start();
 		}
 
 		private void OnMessage(object sender, EventSourceMessageEventArgs e)
 		{
+			isConnected = true;
 			Parse(e.Message);
 		}
 
@@ -89,6 +95,8 @@ namespace blaseball.service {
 			bbConnection.MessageReceived -= OnMessage;
 			bbConnection.Disconnected -= OnDisconnect;
 			bbConnection.Dispose();
+			
+			isConnected = false;
 			bbConnection = null;
 		}
 

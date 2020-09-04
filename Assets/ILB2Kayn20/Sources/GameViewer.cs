@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
+using UnityEngine.UI;
 using Zenject;
 
 public class GameViewer : MonoBehaviour
@@ -19,15 +20,19 @@ public class GameViewer : MonoBehaviour
 	[Inject] public IUILogger Logger;
 	[Inject] public IBlaseballDatabase Database;
 	[Inject] public BBPlaybook Playbook;
+	public TVCameraGraphicsMasterControl cameraGraphicsMasterControl;
 
+	// The game we are viewing goes here
 	protected BBGame game;
+	protected int historicalPlaybackCurrentIndex;
 
+	// The queue for plays and how to handle them and the game state goes here
 	protected Queue<BBGameState> queue;
 
 	protected bool ReadyToProcessNewPlay = false;
 	protected BBGameState currentState;
+	protected BBGameState previousState;
 	protected BBAbstractPlay currentPlay;
-	public TVCameraGraphicsMasterControl cameraGraphicsMasterControl;
 
 	[Header("Cameras")]
 	public CinemachineVirtualCamera cameraOne;
@@ -48,7 +53,7 @@ public class GameViewer : MonoBehaviour
 	[Header("Game Objects")]
 	public Transform Bat;
 	public Transform Ball;
-	
+
 	void Start()
 	{
 
@@ -64,10 +69,19 @@ public class GameViewer : MonoBehaviour
 		game.OnUpdateReady += LogUpdate;
 		ReadyToProcessNewPlay = true;
 
-		currentState = game.GetUpdate(gameRunner.CurrentIndex);
+		historicalPlaybackCurrentIndex = game.isRunning ? -1 : 0;
+		currentState = game.GetUpdate(historicalPlaybackCurrentIndex);
 		if(currentState != null) queue.Enqueue(currentState);
 		HandleTechnicalDifficulties(null);
 
+		if(game.isRunning) {
+			Debug.Log("Rewind Off");
+			cameraGraphicsMasterControl.DisableRewind();
+		} else {
+			Debug.Log("Rewind On");
+			cameraGraphicsMasterControl.EnableRewind();
+			cameraGraphicsMasterControl.rewindPanel.OnChanged += RewindToPoint;
+		}
 	}
 
 	void Update() {
@@ -84,29 +98,35 @@ public class GameViewer : MonoBehaviour
 		}
 	}
 
+	public void Quit() {
+		SceneManager.LoadScene("Title Scene");
+	}
+
+	private void RewindToPoint(int value) {
+		historicalPlaybackCurrentIndex = value;
+		if(historicalPlaybackCurrentIndex != game.HistoryLength) {
+			BBGameState state = game.GetUpdate(value);
+			if(state != null) {
+				LogUpdate(state);
+				ReadyToProcessNewPlay = true;
+			}
+		}
+	}
+
 	private void LogUpdate(BBGameState gameState)
 	{
 		queue.Enqueue(gameState);
 	}
 
 	private void ProcessPlay(BBGameState gameState) {
+		cameraGraphicsMasterControl.rewindPanel.SetLength(game.HistoryLength - 1, historicalPlaybackCurrentIndex);
+
+		previousState = currentState;
 		currentState = gameState;
 		currentPlay = Playbook.GetPlayFromState(gameState);
 		CleanScene();
 
 		switch(currentPlay) {
-			/*
-			case StartGamePlay case1: 
-			HandleStartGame(case1); break;
-			case BBTopOfInningPlay case2:
-			HandleTopOfInnings(case2); break;
-			case BBBottomOfInningPlay case3:
-			HandleBottomOfInnings(case3); break;
-			
-			case BBBatterAtPlatePlay case4:
-			BatterUp(case4); break;
-			*/
-
 			case BBBatterAtPlatePlay bBatterAtPlatePlay:
 			BatterUp(bBatterAtPlatePlay);
 			break;
@@ -120,23 +140,34 @@ public class GameViewer : MonoBehaviour
 			HandleTechnicalDifficulties(currentPlay);
 			break;
 		}
-		//Logger.Log(gameState.lastUpdate);
-
-		//StartCoroutine("ArbitraryWait");
 	}
 
+	/// Triggered by a Signal when an animation is complete; or complete as far as the game
+	/// renderer is concerned. There may be additional animation elements for idles and waiting
+	/// for connection, but the timeline triggers this when the information is shown to the player
+	/// and ready for the next part
 	public void OnAnimationComplete () {
+
 		Logger.Log("Viewer Ready for next update");
-		ReadyToProcessNewPlay = true;
-		if(gameRunner.CurrentIndex != -1) {
-			gameRunner.CurrentIndex++;
-			BBGameState state = game.GetUpdate(gameRunner.CurrentIndex);
+		// If we're in history mode, we get the next value immediately from the history
+		if(historicalPlaybackCurrentIndex != -1 && historicalPlaybackCurrentIndex != game.HistoryLength - 1) {
+			historicalPlaybackCurrentIndex++;
+			BBGameState state = game.GetUpdate(historicalPlaybackCurrentIndex);
 			if(state != null) {
 				LogUpdate(state);
 			}
 		}
+
+		// Otherwise we wait for the server and follow the queue
+
+		// Either way, ready to process the next play
+		ReadyToProcessNewPlay = true;
 	}
 
+	/// <summary>
+	/// Triggered by a signal, this is a signal to pass "up to date" information to the UI;
+	/// showing a strike updated value or new runs or whatnot  
+	/// </summary>
 	public void OnUIUpdateRequest () {
 		switch(currentPlay) {
 			case BBStrikePlay bbStrike:
@@ -155,9 +186,6 @@ public class GameViewer : MonoBehaviour
 		else {
 			cameraGraphicsMasterControl.ShowTechnicalDifficulties(caseFail.gameState.lastUpdate);
 		}
-		//technicalDifficulties[0].Stop();
-		//technicalDifficulties[0].Play(technicalDifficulties[0].playableAsset);
-		//Logger.Log($"UNHANDLED: {caseFail.gameState.lastUpdate} ({caseFail.ToString()})");
 	}
 
 	private void BatterUp(BBBatterAtPlatePlay play) {
@@ -168,11 +196,8 @@ public class GameViewer : MonoBehaviour
 		SetupBatter(play.Batter(), battingTeam.id);
 		SetupCatcher(fieldingTeam.id);
 
-		
 		SetupAndPlay(newBatterAnimations[0]);
 		cameraGraphicsMasterControl.ShowBatter(batter, battingTeam);
-		
-		//Logger.Log($"Batting now for the {team.nickname} is {batter.name}, a {Math.Round(BBPlayer.BatterRating(batter) * 10) / 2} star batter");
 	}
 
 	private void Strike(BBStrikePlay play) {
@@ -183,8 +208,7 @@ public class GameViewer : MonoBehaviour
 		SetupBatter(play.Batter(), battingTeam.id);
 		SetupPitcher(play.Pitcher(), fieldingTeam.id);
 
-		Debug.Log($"STRIKE!: {play.TypeOfStrike}");
-
+		Debug.Log(play.TypeOfStrike);
 		switch(play.TypeOfStrike){
 			case BBStrikePlay.Strike.LOOKING :
 			SetupAndPlay(strikeLookingAnimations[0]);
@@ -196,8 +220,6 @@ public class GameViewer : MonoBehaviour
 			HandleTechnicalDifficulties(play);
 			break;
 		}
-
-		//cameraGraphicsMasterControl.ShowBatter(batter, battingTeam);
 	
 	}
 
@@ -249,7 +271,7 @@ public class GameViewer : MonoBehaviour
 		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
 		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
 
-		SkinnedMeshRenderer[] meshes = DefaultPitcher.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+		SkinnedMeshRenderer[] meshes = GetPitcher().gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
 		
 		meshes[1].material = new Material(meshes[0].material.shader);
 		meshes[1].material.color = teamColorMain;
@@ -314,6 +336,10 @@ public class GameViewer : MonoBehaviour
 
 				case "Umpire" :
 				director.SetGenericBinding(binding.sourceObject, GetUmpire());
+				break;
+
+				case "Pitcher" :
+				director.SetGenericBinding(binding.sourceObject, GetPitcher());
 				break;
 
 				case "Ball" :
