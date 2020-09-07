@@ -46,13 +46,22 @@ public class GameViewer : MonoBehaviour
 	public List<TimelineAsset> strikeSwingingAnimations;
 	public List<TimelineAsset> strikeLookingAnimations;
 	[Header("Actors!")]
-	public Animator DefaultBatter;
-	public Animator DefaultCatcher;
-	public Animator DefaultUmpire;
-	public Animator DefaultPitcher;
+	public CharacterCutsceneControl DefaultCharacterPrefab;
+	public CharacterCutsceneControl DefaultNPCPrefab;
 	[Header("Game Objects")]
 	public Transform Bat;
 	public Transform Ball;
+
+	[Header("Scoreboard Megatron Materials")]
+	public Material Scoreboard;
+	public Material AwayTeamPanel;
+	public Material HomeTeamPanel;
+	protected CharacterCutsceneControl Batter;
+	protected CharacterCutsceneControl Pitcher;
+	protected CharacterCutsceneControl Umpire;
+	protected CharacterCutsceneControl Catcher;
+
+	
 
 	void Start()
 	{
@@ -194,7 +203,7 @@ public class GameViewer : MonoBehaviour
 		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		
 		SetupBatter(play.Batter(), battingTeam.id);
-		SetupCatcher(fieldingTeam.id);
+		SetupCatcher(fieldingTeam.lineup[8], fieldingTeam.id);
 
 		SetupAndPlay(newBatterAnimations[0]);
 		cameraGraphicsMasterControl.ShowBatter(batter, battingTeam);
@@ -242,17 +251,12 @@ public class GameViewer : MonoBehaviour
 
 		Debug.Log("Setting Up Batter");
 		Bat.gameObject.SetActive(true);
-		Animator batter = GetBatter();
 
-		Transform t = batter.gameObject.transform.FindDeepChild("mixamorig:LeftHand");
-		Bat.SetParent(t, false);
+		Bat.SetParent(GetBatter().LeftHandAttachmentReference, false);
 
-		SkinnedMeshRenderer[] meshes = batter.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-		
-		meshes[1].material = new Material(meshes[0].material.shader);
-		meshes[1].material.color = teamColorMain;
-		meshes[0].material = new Material(meshes[1].material.shader);
-		meshes[0].material.color = teamColorSecond;
+		GetBatter().SetPlayerName(player.name);
+		GetBatter().SetPrimaryColor(teamColorMain);
+		GetBatter().SetSecondaryColor(teamColorSecond);
 	}
 	
 	/// <summary>
@@ -271,12 +275,9 @@ public class GameViewer : MonoBehaviour
 		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
 		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
 
-		SkinnedMeshRenderer[] meshes = GetPitcher().gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-		
-		meshes[1].material = new Material(meshes[0].material.shader);
-		meshes[1].material.color = teamColorMain;
-		meshes[0].material = new Material(meshes[1].material.shader);
-		meshes[0].material.color = teamColorSecond;
+		GetPitcher().SetPlayerName(player.name);
+		GetPitcher().SetPrimaryColor(teamColorMain);
+		GetPitcher().SetSecondaryColor(teamColorSecond);
 	}
 
 	/// <summary>
@@ -284,21 +285,20 @@ public class GameViewer : MonoBehaviour
 	/// </summary>
 	/// <param name="batterID"></param>
 	/// <param name="teamID"></param>
-	private void SetupCatcher(string teamID)
+	private void SetupCatcher(string batterID, string teamID)
 	{
+		BBPlayer player = Database.GetPlayer(batterID);
 		BBTeam team = Database.GetTeam(teamID);
+
 		Color teamColorMain = Color.white;
 		Color teamColorSecond = Color.white;
 
 		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
 		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
 
-		SkinnedMeshRenderer[] meshes = DefaultCatcher.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-		
-		meshes[1].material = new Material(meshes[0].material.shader);
-		meshes[1].material.color = teamColorMain;
-		meshes[0].material = new Material(meshes[1].material.shader);
-		meshes[0].material.color = teamColorSecond;
+		GetCatcher().SetPlayerName(player.name);
+		GetCatcher().SetPrimaryColor(teamColorMain);
+		GetCatcher().SetSecondaryColor(teamColorSecond);
 	}
 
 	private void SetupAndPlay(TimelineAsset playableAsset)
@@ -327,19 +327,19 @@ public class GameViewer : MonoBehaviour
 				director.SetGenericBinding(binding.sourceObject, cameraFollower.GetComponent<Animator>()); break;
 
 				case "Batter" :
-				director.SetGenericBinding(binding.sourceObject, GetBatter());
+				director.SetGenericBinding(binding.sourceObject, GetBatter().animator);
 				break;
 
 				case "Catcher" :
-				director.SetGenericBinding(binding.sourceObject, GetCatcher());
+				director.SetGenericBinding(binding.sourceObject, GetCatcher().animator);
 				break;
 
 				case "Umpire" :
-				director.SetGenericBinding(binding.sourceObject, GetUmpire());
+				director.SetGenericBinding(binding.sourceObject, GetUmpire().animator);
 				break;
 
 				case "Pitcher" :
-				director.SetGenericBinding(binding.sourceObject, GetPitcher());
+				director.SetGenericBinding(binding.sourceObject, GetPitcher().animator);
 				break;
 
 				case "Ball" :
@@ -362,20 +362,24 @@ public class GameViewer : MonoBehaviour
 		cameraGraphicsMasterControl.ShowOnlyMajorItems();
 	}
 	
-	private Animator GetBatter()
+	private CharacterCutsceneControl GetBatter()
 	{
-		return DefaultBatter;
+		if(Batter == null) Batter = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
+		return Batter;
 	}
-	private Animator GetUmpire()
+	private CharacterCutsceneControl GetUmpire()
 	{
-		return DefaultUmpire;
+		if(Umpire == null) Umpire = Instantiate(DefaultNPCPrefab).GetComponent<CharacterCutsceneControl>();
+		return Umpire;
 	}
-	private Animator GetCatcher()
+	private CharacterCutsceneControl GetCatcher()
 	{
-		return DefaultCatcher;
+		if(Catcher == null) Catcher = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
+		return Catcher;
 	}
-	private Animator GetPitcher() 
+	private CharacterCutsceneControl GetPitcher() 
 	{
-		return DefaultPitcher;
+		if(Pitcher == null) Pitcher = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
+		return Pitcher;
 	}
 }

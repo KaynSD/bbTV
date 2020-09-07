@@ -86,6 +86,9 @@
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBSubleague.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTeam.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTomorrowsGames.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Characters\CharacterCutsceneControl.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Characters\DefaultCharacterCutsceneControl.cs" />
+     <Compile Include="Assets\ILB2Kayn20\Sources\Characters\NPCCharacterCutsceneControl.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\GameDemonstration.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\GameViewer.cs" />
      <Compile Include="Assets\ILB2Kayn20\Sources\MainController.cs" />
