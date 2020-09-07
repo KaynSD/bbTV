@@ -16,14 +16,16 @@ public class MajorItemsChiron : MonoBehaviour
 	public Image base3;
 	public Image strike1;
 	public Image strike2;
+	public Image strike3;
 	public Image out1;
 	public Image out2;
+	public Image out3;
 	public Image ball1;
 	public Image ball2;
 	public Image ball3;
+	public Image ball4;
 
 	public void Start(){
-		SetText("");
 		SetOuts(0);
 		SetBalls(0);
 		SetStrikes(0);
@@ -33,10 +35,12 @@ public class MajorItemsChiron : MonoBehaviour
 	}
 	public void Show() {
 		gameObject.SetActive(true);
+		SetText("");
 	}
 
 	public void Hide() {
 		gameObject.SetActive(false);
+		SetText("");
 	}
 
 	public void SetText(string newText, bool animate = false) {
@@ -57,6 +61,7 @@ public class MajorItemsChiron : MonoBehaviour
 	public void SetOuts(int outs, bool animate = false) {
 		out1.gameObject.SetActive(outs >= 1);
 		out2.gameObject.SetActive(outs >= 2);
+		out3.gameObject.SetActive(outs >= 3);
 	}
 
 	public void ToggleText(bool v)
@@ -71,10 +76,12 @@ public class MajorItemsChiron : MonoBehaviour
 		ball1.gameObject.SetActive(balls >= 1);
 		ball2.gameObject.SetActive(balls >= 2);
 		ball3.gameObject.SetActive(balls >= 3);
+		ball4.gameObject.SetActive(balls >= 4);
 	}
 
 	public void SetStrikes(int strikes, bool animate = false) {
 		strike1.gameObject.SetActive(strikes >= 1);
 		strike2.gameObject.SetActive(strikes >= 2);
+		strike3.gameObject.SetActive(strikes >= 3);
 	}
 }

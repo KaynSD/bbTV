@@ -95,6 +95,13 @@ namespace blaseball.db {
 		/// <returns>the player object, or null if not present in the DB</returns>
 		BBPlayer GetPlayer(string id);
 		/// <summary>
+		/// Attempt to find a player by name; generally will not be as fast if you already know
+		/// the player's ID.
+		/// </summary>
+		/// <param name="playerName">The name of the player to search for</param>
+		/// <returns></returns>
+		BBPlayer FindPlayerByName(string playerName);
+		/// <summary>
 		/// Add or replace the player in the database. The ID property of the player
 		/// will be used as a unique identifier
 		/// </summary>

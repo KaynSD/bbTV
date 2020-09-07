@@ -44,18 +44,20 @@ namespace blaseball.runtime.events {
 		/// </summary>
 		/// <returns>The reference to the player, or null if failed</returns>
 		public BBPlayer Stealer () {
-			string batterName = recordedRegexMatch.Groups[0].Value;
-			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
+			string playerName = recordedRegexMatch.Groups[0].Value;
+			string playerTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
 
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
+			BBTeam team = database.GetTeam(playerTeam);
+			if(team != null) {
 			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
+				foreach(string playerID in team.lineup){
+					BBPlayer player = database.GetPlayer(playerID);
+					if(player == null) continue;
+					if(player.name == playerName) return player;
+				}
 			}
-			return null;
+
+			return database.FindPlayerByName(playerName);
 		}
 
 	}

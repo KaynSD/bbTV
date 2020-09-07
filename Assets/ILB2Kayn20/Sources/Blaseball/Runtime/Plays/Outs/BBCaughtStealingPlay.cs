@@ -12,11 +12,10 @@ namespace blaseball.runtime.events {
 	/// lastUpdate "X gets caught stealing [base] base"
 	/// </summary>
 
-	public class BBCaughtStealingPlay : BBAbstractPlay
+	public class BBCaughtStealingPlay : BBAbstractPlayerPlay
 	{
 		public override Regex lastUpdateMatches => new Regex(@"([A-Za-zÀ-ÖØ-öø-ÿÀ-ÖØ-öø-ÿ]+) gets caught stealing ([A-Za-zÀ-ÖØ-öø-ÿÀ-ÖØ-öø-ÿÀ-ÖØ-öø-ÿ]+)");
-
-		[Inject] public IBlaseballDatabase database; 
+		
 		public enum StolenBase {
 			SECOND, THIRD, HOME, UNKNOWN
 		}
@@ -47,15 +46,7 @@ namespace blaseball.runtime.events {
 			string batterName = recordedRegexMatch.Groups[0].Value;
 			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
 
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
-			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
-			}
-			return null;
+			return GetPlayerByName(batterName, batterTeam);
 		}
 
 	}

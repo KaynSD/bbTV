@@ -8,6 +8,11 @@ namespace blaseball.runtime.events {
 	public abstract class BBAbstractPlay
 	{
 		/// <summary>
+		/// Which index this is in the play order.
+		/// </summary>
+		public int playIndex = 0;
+
+		/// <summary>
 		/// Get the gameState attached to this play.
 		/// This is normally assigned as part of the Parse method
 		/// </summary>

@@ -7,6 +7,7 @@ using blaseball.runtime.events;
 using blaseball.ui;
 using blaseball.vo;
 using Cinemachine;
+using kaynsd.helpers.rng;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -20,7 +21,39 @@ public class GameViewer : MonoBehaviour
 	[Inject] public IUILogger Logger;
 	[Inject] public IBlaseballDatabase Database;
 	[Inject] public BBPlaybook Playbook;
+
+	[Header("Graphics Package")]
 	public TVCameraGraphicsMasterControl cameraGraphicsMasterControl;
+
+	[Header("Cameras")]
+	public CinemachineVirtualCamera cameraOne;
+	public CinemachineVirtualCamera cameraTwo;
+	public Transform cameraFollower;
+
+	[Header("Timelines!")]
+	public PlayableDirector director;
+	[Header(" - Defaults / Technical Difficulties")]
+	public List<TimelineAsset> technicalDifficulties;
+	[Header(" - Changeups")]
+	public List<TimelineAsset> newBatterAnimations;
+	[Header(" - At Bats")]
+	public List<TimelineAsset> strikeSwingingAnimations;
+	public List<TimelineAsset> strikeLookingAnimations;
+	public List<TimelineAsset> strikeOutLookingAnimations;
+	public List<TimelineAsset> strikeOutSwingingAnimations;
+	public List<TimelineAsset> ballcountAnimations;
+	[Header("Actors!")]
+	public CharacterCutsceneControl DefaultCharacterPrefab;
+	public CharacterCutsceneControl DefaultNPCPrefab;
+	[Header("Game Objects")]
+	public Transform Bat;
+	public Transform Ball;
+
+	[Header("Scoreboard Megatron Materials")]
+	public Material Scoreboard;
+	public Material AwayTeamPanel;
+	public Material HomeTeamPanel;
+
 
 	// The game we are viewing goes here
 	protected BBGame game;
@@ -34,32 +67,12 @@ public class GameViewer : MonoBehaviour
 	protected BBGameState previousState;
 	protected BBAbstractPlay currentPlay;
 
-	[Header("Cameras")]
-	public CinemachineVirtualCamera cameraOne;
-	public CinemachineVirtualCamera cameraTwo;
-	public Transform cameraFollower;
-
-	[Header("Timelines!")]
-	public PlayableDirector director;
-	public List<TimelineAsset> technicalDifficulties;
-	public List<TimelineAsset> newBatterAnimations;
-	public List<TimelineAsset> strikeSwingingAnimations;
-	public List<TimelineAsset> strikeLookingAnimations;
-	[Header("Actors!")]
-	public CharacterCutsceneControl DefaultCharacterPrefab;
-	public CharacterCutsceneControl DefaultNPCPrefab;
-	[Header("Game Objects")]
-	public Transform Bat;
-	public Transform Ball;
-
-	[Header("Scoreboard Megatron Materials")]
-	public Material Scoreboard;
-	public Material AwayTeamPanel;
-	public Material HomeTeamPanel;
 	protected CharacterCutsceneControl Batter;
 	protected CharacterCutsceneControl Pitcher;
 	protected CharacterCutsceneControl Umpire;
 	protected CharacterCutsceneControl Catcher;
+
+	protected List<float> PregeneratedRandomValues;
 
 	
 
@@ -67,13 +80,20 @@ public class GameViewer : MonoBehaviour
 	{
 
 		game = gameRunner.getFocusedGame();
-		queue = new Queue<BBGameState>();
-
 		if(game == null){
 			SceneManager.LoadScene("Title Scene");
 			return;
 		}
 
+
+		PRNG prng = new ParkMiller(game.GameID);
+		PregeneratedRandomValues = new List<float>();
+		for(int i = 0; i < 1000; i++) {
+			PregeneratedRandomValues.Add(prng.next());
+		}
+
+
+		queue = new Queue<BBGameState>();
 		queue = new Queue<BBGameState>();
 		game.OnUpdateReady += LogUpdate;
 		ReadyToProcessNewPlay = true;
@@ -127,12 +147,16 @@ public class GameViewer : MonoBehaviour
 		queue.Enqueue(gameState);
 	}
 
-	private void ProcessPlay(BBGameState gameState) {
+	private void ProcessPlay(BBGameState gameState, int index = -1) {
 		cameraGraphicsMasterControl.rewindPanel.SetLength(game.HistoryLength - 1, historicalPlaybackCurrentIndex);
+
+		if(historicalPlaybackCurrentIndex == -1) {
+			index = game.HistoryLength;
+		}
 
 		previousState = currentState;
 		currentState = gameState;
-		currentPlay = Playbook.GetPlayFromState(gameState);
+		currentPlay = Playbook.GetPlayFromState(gameState, index);
 		CleanScene();
 
 		switch(currentPlay) {
@@ -142,6 +166,14 @@ public class GameViewer : MonoBehaviour
 
 			case BBStrikePlay bBStrikePlay:
 			Strike(bBStrikePlay);
+			break;
+
+			case BBBallPlay bBallPlay:
+			BallCount(bBallPlay);
+			break;
+
+			case BBStrikeOutPlay bBStrikeOutPlay:
+			StrikeOut(bBStrikeOutPlay);
 			break;
 
 
@@ -163,7 +195,7 @@ public class GameViewer : MonoBehaviour
 			historicalPlaybackCurrentIndex++;
 			BBGameState state = game.GetUpdate(historicalPlaybackCurrentIndex);
 			if(state != null) {
-				LogUpdate(state);
+				ProcessPlay(state, historicalPlaybackCurrentIndex);
 			}
 		}
 
@@ -180,32 +212,48 @@ public class GameViewer : MonoBehaviour
 	public void OnUIUpdateRequest () {
 		switch(currentPlay) {
 			case BBStrikePlay bbStrike:
-				cameraGraphicsMasterControl.ShowStrike(bbStrike);
+			case BBStrikeOutPlay bbStrikeOut:
+				cameraGraphicsMasterControl.ShowStrike(currentPlay);
+				break;
+			case BBBallPlay bBBallPlay:
+				cameraGraphicsMasterControl.ShowBallCount(bBBallPlay);
 				break;
 
 		}
 	}
+
+	private TimelineAsset GetRandomAnimation(List<TimelineAsset> animations, int playIndex) {
+		Debug.Log($"Play Index: {playIndex}");
+		while(playIndex < 0) playIndex += 1000;
+		float value = PregeneratedRandomValues[playIndex % 1000];
+		int index = Mathf.FloorToInt(animations.Count * value);
+		return animations[index];
+	}
 	
 	private void HandleTechnicalDifficulties(BBAbstractPlay caseFail)
 	{
-		SetupAndPlay(technicalDifficulties[0]);
 		if(caseFail == null) {
+			SetupAndPlay(GetRandomAnimation(technicalDifficulties, 0));
 			cameraGraphicsMasterControl.ShowTechnicalDifficulties("Waiting for setup!");
 		}
 		else {
+			SetupAndPlay(GetRandomAnimation(technicalDifficulties, caseFail.playIndex));
+			cameraGraphicsMasterControl.ResetPlate(caseFail);
 			cameraGraphicsMasterControl.ShowTechnicalDifficulties(caseFail.gameState.lastUpdate);
 		}
 	}
 
 	private void BatterUp(BBBatterAtPlatePlay play) {
-		BBPlayer batter = Database.GetPlayer(play.Batter());
+		cameraGraphicsMasterControl.ResetPlate(play);
+
+		BBPlayer batter = play.Batter();
 		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		
 		SetupBatter(play.Batter(), battingTeam.id);
-		SetupCatcher(fieldingTeam.lineup[8], fieldingTeam.id);
+		SetupCatcher(Database.GetPlayer(fieldingTeam.lineup[8]), fieldingTeam.id);
 
-		SetupAndPlay(newBatterAnimations[0]);
+		SetupAndPlay(GetRandomAnimation(newBatterAnimations, play.playIndex));
 		cameraGraphicsMasterControl.ShowBatter(batter, battingTeam);
 	}
 
@@ -213,23 +261,53 @@ public class GameViewer : MonoBehaviour
 		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		
-
 		SetupBatter(play.Batter(), battingTeam.id);
 		SetupPitcher(play.Pitcher(), fieldingTeam.id);
 
-		Debug.Log(play.TypeOfStrike);
 		switch(play.TypeOfStrike){
 			case BBStrikePlay.Strike.LOOKING :
-			SetupAndPlay(strikeLookingAnimations[0]);
+			SetupAndPlay(GetRandomAnimation(strikeLookingAnimations, play.playIndex));
 			break;
 			case BBStrikePlay.Strike.SWINGING :
-			SetupAndPlay(strikeSwingingAnimations[0]);
+			SetupAndPlay(GetRandomAnimation(strikeSwingingAnimations, play.playIndex));
 			break;
 			default:
 			HandleTechnicalDifficulties(play);
 			break;
 		}
-	
+	}
+	private void StrikeOut(BBStrikeOutPlay play) {
+		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
+		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
+		
+		BBPlayer batter = play.Batter();
+		BBPlayer pitcher = play.Pitcher();
+		
+
+		SetupBatter(batter, battingTeam.id);
+		SetupPitcher(pitcher, fieldingTeam.id);
+
+		switch(play.TypeOfStrikeOut){
+			case BBStrikeOutPlay.StrikeOut.LOOKING :
+			SetupAndPlay(GetRandomAnimation(strikeOutLookingAnimations, play.playIndex));
+			break;
+			case BBStrikeOutPlay.StrikeOut.SWINGING :
+			SetupAndPlay(GetRandomAnimation(strikeOutSwingingAnimations, play.playIndex));
+			break;
+			default:
+			HandleTechnicalDifficulties(play);
+			break;
+		}
+	}
+
+	private void BallCount(BBBallPlay play) {
+		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
+		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
+		
+		SetupBatter(play.Batter(), battingTeam.id);
+		SetupPitcher(play.Pitcher(), fieldingTeam.id);
+
+		SetupAndPlay(GetRandomAnimation(ballcountAnimations, play.playIndex));
 	}
 
 	  
@@ -238,9 +316,8 @@ public class GameViewer : MonoBehaviour
 	/// </summary>
 	/// <param name="batterID"></param>
 	/// <param name="teamID"></param>
-	private void SetupBatter(string batterID, string teamID)
+	private void SetupBatter(BBPlayer player, string teamID)
 	{
-		BBPlayer player = Database.GetPlayer(batterID);
 		BBTeam team = Database.GetTeam(teamID);
 
 		Color teamColorMain = Color.white;
@@ -249,7 +326,7 @@ public class GameViewer : MonoBehaviour
 		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
 		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
 
-		Debug.Log("Setting Up Batter");
+		Debug.Log($"Setting Up Batter: {player}");
 		Bat.gameObject.SetActive(true);
 
 		Bat.SetParent(GetBatter().LeftHandAttachmentReference, false);
@@ -264,9 +341,8 @@ public class GameViewer : MonoBehaviour
 	/// </summary>
 	/// <param name="batterID"></param>
 	/// <param name="teamID"></param>
-	private void SetupPitcher(string batterID, string teamID)
+	private void SetupPitcher(BBPlayer player, string teamID)
 	{
-		BBPlayer player = Database.GetPlayer(batterID);
 		BBTeam team = Database.GetTeam(teamID);
 
 		Color teamColorMain = Color.white;
@@ -285,9 +361,8 @@ public class GameViewer : MonoBehaviour
 	/// </summary>
 	/// <param name="batterID"></param>
 	/// <param name="teamID"></param>
-	private void SetupCatcher(string batterID, string teamID)
+	private void SetupCatcher(BBPlayer player, string teamID)
 	{
-		BBPlayer player = Database.GetPlayer(batterID);
 		BBTeam team = Database.GetTeam(teamID);
 
 		Color teamColorMain = Color.white;

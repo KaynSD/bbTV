@@ -18,7 +18,7 @@ namespace blaseball.runtime.events {
 	/// 
 	/// </summary>
 
-	public class BBHomeRunPlay : BBAbstractPlay
+	public class BBHomeRunPlay : BBAbstractPlayerPlay
 	{
 
 		/// <summary>
@@ -28,8 +28,6 @@ namespace blaseball.runtime.events {
 		/// </summary>
 		/// <returns></returns>
 		public override Regex lastUpdateMatches => new Regex(@"([A-Za-zÀ-ÖØ-öø-ÿÀ-ÖØ-öø-ÿ]+) hits a(?:(?: ([0-9]+)(?:-run )|(?: solo )|(?: )))home run!");
-
-		[Inject] public IBlaseballDatabase database; 
 		public int scores = 1;
 		Match recordedRegexMatch;
 
@@ -51,18 +49,10 @@ namespace blaseball.runtime.events {
 		/// </summary>
 		/// <returns>The reference to the player, or null if failed</returns>
 		public BBPlayer Batter () {
-			string batterName = recordedRegexMatch.Groups[0].Value;
-			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
+			string playerName = recordedRegexMatch.Groups[0].Value;
+			string playerTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
 
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
-			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
-			}
-			return null;
+			return GetPlayerByName(playerName, playerTeam);
 		}
 
 	}

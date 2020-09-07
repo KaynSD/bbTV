@@ -119,5 +119,13 @@ namespace blaseball.db {
 		{
 			Players[player.id] = player;
 		}
+
+		public BBPlayer FindPlayerByName(string playerName)
+		{
+			foreach(BBPlayer player in Players.Values) {
+				if(player.name == playerName) return player;
+			}
+			return null;
+		}
 	}
 }

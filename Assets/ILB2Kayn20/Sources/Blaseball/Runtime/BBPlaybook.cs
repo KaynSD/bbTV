@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using blaseball.db;
 using blaseball.runtime.events;
 using blaseball.vo;
+using Zenject;
 
 namespace blaseball.runtime {
 	public class BBPlaybook {
-
+		[Inject] IBlaseballDatabase database;
 		List<Regex> regexes;
 		List<Type> types;
 		public BBPlaybook()
@@ -36,7 +38,7 @@ namespace blaseball.runtime {
 			}
 		}
 
-		public BBAbstractPlay GetPlayFromState(BBGameState gameState) {
+		public BBAbstractPlay GetPlayFromState(BBGameState gameState, int playIndex) {
 			BBAbstractPlay play = new UnknownPlay();
 
 			for(int i = 0; i < regexes.Count; i++) {
@@ -47,6 +49,12 @@ namespace blaseball.runtime {
 				}
 			}
 
+			if(play is BBAbstractPlayerPlay) {
+				// Zenject doesn't quite work with Activator. This is a workaround
+				((BBAbstractPlayerPlay)play).Setup(database);
+			}
+
+			play.playIndex = playIndex;
 			play.Parse(gameState);
 			return play;
 		}

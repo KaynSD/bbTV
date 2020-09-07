@@ -15,11 +15,9 @@ namespace blaseball.runtime.events {
 	/// lastUpdate "X scores on the sacrifice."
 	/// </summary>
 
-	public class BBSacrificePlay : BBAbstractPlay
+	public class BBSacrificePlay : BBAbstractPlayerPlay
 	{
 		public override Regex lastUpdateMatches => new Regex(@"([A-Za-zÀ-ÖØ-öø-ÿÀ-ÖØ-öø-ÿ ]+) +scores on the sacrifice(?: fly|)");
-
-		[Inject] public IBlaseballDatabase database; 
 
 		Match recordedRegexMatch;
 		public override void Parse(BBGameState gameState)
@@ -34,18 +32,9 @@ namespace blaseball.runtime.events {
 		/// </summary>
 		/// <returns>The reference to the player, or null if failed</returns>
 		public BBPlayer Scorer () {
-			string batterName = recordedRegexMatch.Groups[0].Value;
-			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
-
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
-			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
-			}
-			return null;
+			string playerName = recordedRegexMatch.Groups[0].Value;
+			string playerTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
+			return GetPlayerByName(playerName, playerTeam);
 		}
 
 	}

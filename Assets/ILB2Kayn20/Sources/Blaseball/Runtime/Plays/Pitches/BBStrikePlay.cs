@@ -12,7 +12,7 @@ namespace blaseball.runtime.events {
 	/// lastUpdate "Strike, [type]. [balls]-[strikes]"
 	/// </summary>
 
-	public class BBStrikePlay : BBAbstractPlay
+	public class BBStrikePlay : BBAbstractPlayerPlay
 	{
 		public enum Strike {
 			UNKNOWN,
@@ -41,18 +41,17 @@ namespace blaseball.runtime.events {
 		/// Returns the player ID of the player at bat
 		/// </summary>
 		/// <returns>Player ID of Batter</returns>
-		public string Batter () {
+		public BBPlayer Batter () {
 			// Top of inning means away team at bat
-			return gameState.topOfInning ?  gameState.awayBatter : gameState.homeBatter;
+			return database.GetPlayer(gameState.topOfInning ?  gameState.awayBatter : gameState.homeBatter);
 		}
 
 		/// <summary>
 		/// Returns the player ID of the player pitching
 		/// </summary>
 		/// <returns>Player ID of Pitcher</returns>
-		public string Pitcher () {
-			// Top of inning means away team at bat
-			return gameState.topOfInning ?  gameState.homePitcher : gameState.awayPitcher;
+		public BBPlayer Pitcher () {
+			return database.GetPlayer(gameState.topOfInning ?  gameState.homePitcher : gameState.awayPitcher);
 		}
 
 	}

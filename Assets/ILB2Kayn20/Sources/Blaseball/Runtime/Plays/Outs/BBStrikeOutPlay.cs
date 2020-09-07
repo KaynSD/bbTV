@@ -12,9 +12,8 @@ namespace blaseball.runtime.events {
 	/// lastUpdate "X strikes out [type]." or "X struck out [type]".
 	/// </summary>
 
-	public class BBStrikeOutPlay : BBAbstractPlay
+	public class BBStrikeOutPlay : BBAbstractPlayerPlay
 	{
-		[Inject] public IBlaseballDatabase database; 
 		public enum StrikeOut {
 			UNKNOWN,
 			SWINGING,
@@ -28,10 +27,10 @@ namespace blaseball.runtime.events {
 		{
 			this.gameState = gameState;
 			recordedRegexMatch = lastUpdateMatches.Match(gameState.lastUpdate);
-			switch(recordedRegexMatch.Groups[1].Value){
+			switch(recordedRegexMatch.Groups[2].Value){
 				case "swinging" : TypeOfStrikeOut = StrikeOut.SWINGING;
 				break;
-				case "looking" : TypeOfStrikeOut = StrikeOut.SWINGING;
+				case "looking" : TypeOfStrikeOut = StrikeOut.LOOKING;
 				break;
 				default : TypeOfStrikeOut = StrikeOut.UNKNOWN;
 				break;
@@ -44,18 +43,18 @@ namespace blaseball.runtime.events {
 		/// </summary>
 		/// <returns>The reference to the player, or null if failed</returns>
 		public BBPlayer Batter () {
-			string batterName = recordedRegexMatch.Groups[0].Value;
-			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
+			string playerName = recordedRegexMatch.Groups[1].Value;
+			string playerTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
 
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
-			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
-			}
-			return null;
+			return GetPlayerByName(playerName, playerTeam);
+		}
+
+		/// <summary>
+		/// Returns the player ID of the player pitching
+		/// </summary>
+		/// <returns>Player ID of Pitcher</returns>
+		public BBPlayer Pitcher () {
+			return database.GetPlayer(gameState.topOfInning ?  gameState.homePitcher : gameState.awayPitcher);
 		}
 
 		public StrikeOut TypeOfStrikeOut; 

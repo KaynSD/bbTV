@@ -13,7 +13,7 @@ namespace blaseball.runtime.events {
 	/// lastUpdate "X reaches on fielder's choice. Y out at (second/third/fourth) base." Optionally followed by, " Z scores."
 	/// </summary>
 
-	public class BBFieldersChoice : BBAbstractPlay
+	public class BBFieldersChoice : BBAbstractPlayerPlay
 	{
 		/// <summary>
 		/// Groups:
@@ -27,8 +27,6 @@ namespace blaseball.runtime.events {
 		public enum RunnerOutOn {
 			UNKNOWN, FIRST, SECOND, THIRD, HOME
 		}
-		
-		[Inject] public IBlaseballDatabase database; 
 
 		public RunnerOutOn runnerGroundOutOn;
 
@@ -56,16 +54,7 @@ namespace blaseball.runtime.events {
 		public BBPlayer Batter () {
 			string batterName = recordedRegexMatch.Groups[0].Value;
 			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
-
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
-			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
-			}
-			return null;
+			return GetPlayerByName(batterName, batterTeam);
 		}
 		/// <summary>
 		/// Searches the database (specifically, just the batting team) for a player
@@ -73,18 +62,10 @@ namespace blaseball.runtime.events {
 		/// </summary>
 		/// <returns>The reference to the player, or null if failed</returns>
 		public BBPlayer RunnerOut () {
-			string batterName = recordedRegexMatch.Groups[1].Value;
+			string runnerName = recordedRegexMatch.Groups[1].Value;
 			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
 
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
-			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
-			}
-			return null;
+			return GetPlayerByName(runnerName, batterTeam);
 		}
 
 		/// <summary>
@@ -94,18 +75,12 @@ namespace blaseball.runtime.events {
 		/// <returns>The reference to the player, or null if failed</returns>
 		public BBPlayer Scorer () {
 			if(recordedRegexMatch.Groups.Count <= 3) return null; 
-			string batterName = recordedRegexMatch.Groups[3].Value;
+
+			string runnerName = recordedRegexMatch.Groups[3].Value;
 			string batterTeam = gameState.topOfInning ? gameState.awayTeam : gameState.homeTeam;
 
-			BBTeam team = database.GetTeam(batterTeam);
-			if(team == null) return null;
+			return GetPlayerByName(runnerName, batterTeam);
 			
-			foreach(string playerID in team.lineup){
-				BBPlayer player = database.GetPlayer(playerID);
-				if(player == null) continue;
-				if(player.name == batterName) return player;
-			}
-			return null;
 		}
 	}
 }
