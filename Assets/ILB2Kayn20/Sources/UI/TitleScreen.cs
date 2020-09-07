@@ -76,7 +76,7 @@ public class TitleScreen : MonoBehaviour
 		AllPanels[2].SetActive(true);
 	}
 	public void Exit() {
-		//NoOp
+		Application.Quit();
 	}
 
 	public void ViewGame(GameButtonBehaviour button) {
