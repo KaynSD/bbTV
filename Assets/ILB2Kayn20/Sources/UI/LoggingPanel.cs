@@ -10,7 +10,7 @@ namespace blaseball.ui {
 	public class LoggingPanel : MonoBehaviour, IUILogger
 	{
 
-		[Inject] IBlaseballResultsService service;
+		[Inject] public IBlaseballResultsService service;
 		string textToAppend = "";
 		public TextMeshProUGUI text;
 		public ScrollRect scrollRect;

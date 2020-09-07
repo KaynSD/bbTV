@@ -64,6 +64,16 @@ namespace blaseball.file {
 			BBLeague league = database.GetLeague();
 			return $"file://{applicationConfig.RootDirectory}blaseball/{league.id}/team/{teamID}/logo.png";
 		}
+		public string GetTeam3DLogoPath(string teamID)
+		{
+			BBLeague league = database.GetLeague();
+			return $"{applicationConfig.RootDirectory}blaseball/{league.id}/team/{teamID}/logo.unity3d";
+		}
+		public string GetPlayerCustomModel(string playerID)
+		{
+			BBLeague league = database.GetLeague();
+			return $"{applicationConfig.RootDirectory}blaseball/{league.id}/player/{playerID}/body.unity3d";
+		}
 
 		public void SetupStreamingAssets()
 		{
@@ -163,5 +173,6 @@ namespace blaseball.file {
 				return txt;
 			}
 		}
+
 	}
 }

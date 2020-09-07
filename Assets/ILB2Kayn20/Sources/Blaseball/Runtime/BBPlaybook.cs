@@ -8,7 +8,7 @@ using Zenject;
 
 namespace blaseball.runtime {
 	public class BBPlaybook {
-		[Inject] IBlaseballDatabase database;
+		[Inject] public IBlaseballDatabase database;
 		List<Regex> regexes;
 		List<Type> types;
 		public BBPlaybook()

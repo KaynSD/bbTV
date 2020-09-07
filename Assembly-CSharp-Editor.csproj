@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{6BE51005-4985-1039-2250-BAAEE801725D}</ProjectGuid>
+    <ProjectGuid>{D42C93A3-716F-9CEC-F736-1D807013CC1D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Zenject-TestFramework</AssemblyName>
+    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -45,21 +45,42 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\TestFramework\SceneTestFixture.cs" />
-     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\TestFramework\SceneTestFixtureSceneReference.cs" />
-     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\TestFramework\ValidateOnlyAttribute.cs" />
-     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\TestFramework\ZenjectIntegrationTestFixture.cs" />
-     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\TestFramework\ZenjectTestUtil.cs" />
-     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\TestFramework\ZenjectUnitTestFixture.cs" />
-     <None Include="Assets\Plugins\Zenject\OptionalExtras\TestFramework\Zenject-TestFramework.asmdef" />
- <Reference Include="UnityEngine.TestRunner">
- <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\Editor\CreateAssetBundles.cs" />
  <Reference Include="UnityEditor.TestRunner">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEngine.TestRunner">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Timeline.Editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Cinemachine">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.VSCode.Editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro.Editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Timeline">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.CollabProxy.Editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Rider.Editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="com.unity.cinemachine.editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
@@ -258,6 +279,51 @@
  </Reference>
  <Reference Include="UnityEditor.WebGL.Extensions">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="DotNetZip">
+ <HintPath>D:/Projects/blaseballTV/Assets/NuGet/Editor/DotNetZip.dll</HintPath>
+ </Reference>
+ <Reference Include="NugetForUnity">
+ <HintPath>D:/Projects/blaseballTV/Assets/NuGet/Editor/NugetForUnity.dll</HintPath>
+ </Reference>
+ <Reference Include="EvtSource">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/3v.EvtSource.2.0.0/lib/netstandard2.0/EvtSource.dll</HintPath>
+ </Reference>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/Newtonsoft.Json.12.0.3/lib/netstandard2.0/Newtonsoft.Json.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Buffers">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Buffers.4.5.1/lib/netstandard2.0/System.Buffers.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Memory">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Memory.4.5.4/lib/netstandard2.0/System.Memory.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Numerics.Vectors">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Numerics.Vectors.4.4.0/lib/netstandard2.0/System.Numerics.Vectors.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Reflection.Emit.ILGeneration">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Reflection.Emit.ILGeneration.4.7.0/lib/netstandard2.0/System.Reflection.Emit.ILGeneration.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Reflection.Emit.Lightweight">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Reflection.Emit.Lightweight.4.7.0/lib/netstandard2.0/System.Reflection.Emit.Lightweight.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Runtime.CompilerServices.Unsafe">
+ <HintPath>D:/Projects/blaseballTV/Assets/Packages/System.Runtime.CompilerServices.Unsafe.4.5.3/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Pdb">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Rocks">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Lib/Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
+ </Reference>
+ <Reference Include="Zenject-usage">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/Source/Usage/Zenject-usage.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
  <HintPath>D:/Projects/blaseballTV/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
@@ -618,6 +684,22 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp.csproj">
+      <Project>{4B1D5D3F-8165-6E0A-26E3-7BB63FA0B3F3}</Project>
+      <Name>Assembly-CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject-Editor.csproj">
+      <Project>{871ED71D-7FC5-1E87-C1CF-BB364769CD05}</Project>
+      <Name>Zenject-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject-ReflectionBaking-Editor.csproj">
+      <Project>{AAB3D1AF-DBD3-7348-BB39-0676D6F54D3E}</Project>
+      <Name>Zenject-ReflectionBaking-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject-PoolMonitor-Editor.csproj">
+      <Project>{C78E8A06-5975-8D0F-F422-1F5BB00E4F87}</Project>
+      <Name>Zenject-PoolMonitor-Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Zenject.csproj">
       <Project>{18CE2E79-DE94-3E2D-8075-38F4C04D04A4}</Project>
       <Name>Zenject</Name>

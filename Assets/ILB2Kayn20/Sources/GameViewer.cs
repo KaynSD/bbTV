@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using blaseball.db;
+using blaseball.file;
 using blaseball.runtime;
 using blaseball.runtime.events;
 using blaseball.ui;
@@ -21,6 +22,7 @@ public class GameViewer : MonoBehaviour
 	[Inject] public IUILogger Logger;
 	[Inject] public IBlaseballDatabase Database;
 	[Inject] public BBPlaybook Playbook;
+	[Inject] public IBlaseballFileLoader Loader;
 
 	[Header("Graphics Package")]
 	public TVCameraGraphicsMasterControl cameraGraphicsMasterControl;
@@ -329,11 +331,11 @@ public class GameViewer : MonoBehaviour
 		Debug.Log($"Setting Up Batter: {player}");
 		Bat.gameObject.SetActive(true);
 
-		Bat.SetParent(GetBatter().LeftHandAttachmentReference, false);
+		Bat.SetParent(GetBatter(player).LeftHandAttachmentReference, false);
 
-		GetBatter().SetPlayerName(player.name);
-		GetBatter().SetPrimaryColor(teamColorMain);
-		GetBatter().SetSecondaryColor(teamColorSecond);
+		GetBatter(player).SetPlayerName(player.name);
+		GetBatter(player).SetPrimaryColor(teamColorMain);
+		GetBatter(player).SetSecondaryColor(teamColorSecond);
 	}
 	
 	/// <summary>
@@ -351,9 +353,9 @@ public class GameViewer : MonoBehaviour
 		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
 		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
 
-		GetPitcher().SetPlayerName(player.name);
-		GetPitcher().SetPrimaryColor(teamColorMain);
-		GetPitcher().SetSecondaryColor(teamColorSecond);
+		GetPitcher(player).SetPlayerName(player.name);
+		GetPitcher(player).SetPrimaryColor(teamColorMain);
+		GetPitcher(player).SetSecondaryColor(teamColorSecond);
 	}
 
 	/// <summary>
@@ -371,9 +373,9 @@ public class GameViewer : MonoBehaviour
 		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
 		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
 
-		GetCatcher().SetPlayerName(player.name);
-		GetCatcher().SetPrimaryColor(teamColorMain);
-		GetCatcher().SetSecondaryColor(teamColorSecond);
+		GetCatcher(player).SetPlayerName(player.name);
+		GetCatcher(player).SetPrimaryColor(teamColorMain);
+		GetCatcher(player).SetSecondaryColor(teamColorSecond);
 	}
 
 	private void SetupAndPlay(TimelineAsset playableAsset)
@@ -402,11 +404,11 @@ public class GameViewer : MonoBehaviour
 				director.SetGenericBinding(binding.sourceObject, cameraFollower.GetComponent<Animator>()); break;
 
 				case "Batter" :
-				director.SetGenericBinding(binding.sourceObject, GetBatter().animator);
+				director.SetGenericBinding(binding.sourceObject, Batter.animator);
 				break;
 
 				case "Catcher" :
-				director.SetGenericBinding(binding.sourceObject, GetCatcher().animator);
+				director.SetGenericBinding(binding.sourceObject, Catcher.animator);
 				break;
 
 				case "Umpire" :
@@ -414,7 +416,7 @@ public class GameViewer : MonoBehaviour
 				break;
 
 				case "Pitcher" :
-				director.SetGenericBinding(binding.sourceObject, GetPitcher().animator);
+				director.SetGenericBinding(binding.sourceObject, Pitcher.animator);
 				break;
 
 				case "Ball" :
@@ -433,28 +435,67 @@ public class GameViewer : MonoBehaviour
 		cameraGraphicsMasterControl.ClearAllGraphics();
 		cameraTwo.gameObject.SetActive(false);
 		cameraOne.gameObject.SetActive(false);
+		
 		Bat.gameObject.SetActive(false);
+		Bat.SetParent(transform, false);
+
 		cameraGraphicsMasterControl.ShowOnlyMajorItems();
+
+		if(Batter != null) Destroy(Batter.gameObject); Batter = null;
+		if(Catcher != null) Destroy(Catcher.gameObject); Catcher = null;
+		if(Pitcher != null) Destroy(Pitcher.gameObject); Pitcher = null;
 	}
 	
-	private CharacterCutsceneControl GetBatter()
+	private CharacterCutsceneControl GetBatter(BBPlayer player)
 	{
+		if(Batter != null) return Batter;
+
+		if(player != null) Batter = LoadCharacter(player);
 		if(Batter == null) Batter = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
 		return Batter;
+	}
+
+	private CharacterCutsceneControl GetCatcher(BBPlayer player)
+	{
+		if(Catcher != null) return Catcher;
+
+		if(player != null) Catcher = LoadCharacter(player);
+		if(Catcher == null) Catcher = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
+		return Catcher;
+	}
+	private CharacterCutsceneControl GetPitcher(BBPlayer player) 
+	{
+		if(Pitcher != null) return Pitcher;
+
+		if(player != null) Pitcher = LoadCharacter(player);
+		if(Pitcher == null) Pitcher = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
+		return Pitcher;
+	}
+
+
+	private CharacterCutsceneControl LoadCharacter(BBPlayer player)
+	{
+		try {
+			var myLoadedAssetBundle = AssetBundle.LoadFromFile(Loader.GetPlayerCustomModel(player.id));
+			if (myLoadedAssetBundle == null)
+			{
+				Debug.Log("Failed to load AssetBundle!");
+				return null;
+			}
+
+			var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("Body");
+			GameObject playerModel = (GameObject)Instantiate(prefab);
+
+			myLoadedAssetBundle.Unload(false);
+			
+			return playerModel.GetComponent<CharacterCutsceneControl>();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	private CharacterCutsceneControl GetUmpire()
 	{
 		if(Umpire == null) Umpire = Instantiate(DefaultNPCPrefab).GetComponent<CharacterCutsceneControl>();
 		return Umpire;
-	}
-	private CharacterCutsceneControl GetCatcher()
-	{
-		if(Catcher == null) Catcher = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
-		return Catcher;
-	}
-	private CharacterCutsceneControl GetPitcher() 
-	{
-		if(Pitcher == null) Pitcher = Instantiate(DefaultCharacterPrefab).GetComponent<CharacterCutsceneControl>();
-		return Pitcher;
 	}
 }

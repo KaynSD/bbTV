@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject-Editor", "Zenject-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject-TestFramework", "Zenject-TestFramework.csproj", "{6BE51005-4985-1039-2250-BAAEE801725D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{D42C93A3-716F-9CEC-F736-1D807013CC1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{6BE51005-4985-1039-2250-BAAEE801725D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BE51005-4985-1039-2250-BAAEE801725D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE51005-4985-1039-2250-BAAEE801725D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D42C93A3-716F-9CEC-F736-1D807013CC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42C93A3-716F-9CEC-F736-1D807013CC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42C93A3-716F-9CEC-F736-1D807013CC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42C93A3-716F-9CEC-F736-1D807013CC1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
