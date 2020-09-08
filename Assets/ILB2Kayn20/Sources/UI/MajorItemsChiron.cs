@@ -8,22 +8,26 @@ using UnityEngine.UI;
 
 public class MajorItemsChiron : MonoBehaviour
 {
-	public GameObject textPanel;
-	public GameObject majorItemsPanel;
-	public TextMeshProUGUI text;
-	public Image base1;
-	public Image base2;
-	public Image base3;
-	public Image strike1;
-	public Image strike2;
-	public Image strike3;
-	public Image out1;
-	public Image out2;
-	public Image out3;
-	public Image ball1;
-	public Image ball2;
-	public Image ball3;
-	public Image ball4;
+	[SerializeField] protected Sprite OnLightImage;
+	[SerializeField] protected Sprite OffLightImage;
+	[SerializeField] protected Sprite OnBaseImage;
+	[SerializeField] protected Sprite OffBaseImage;
+	[SerializeField] protected GameObject textPanel;
+	[SerializeField] protected GameObject majorItemsPanel;
+	[SerializeField] protected TextMeshProUGUI text;
+	[SerializeField] protected Image base1;
+	[SerializeField] protected Image base2;
+	[SerializeField] protected Image base3;
+	[SerializeField] protected Image strike1;
+	[SerializeField] protected Image strike2;
+	[SerializeField] protected Image strike3;
+	[SerializeField] protected Image out1;
+	[SerializeField] protected Image out2;
+	[SerializeField] protected Image out3;
+	[SerializeField] protected Image ball1;
+	[SerializeField] protected Image ball2;
+	[SerializeField] protected Image ball3;
+	[SerializeField] protected Image ball4;
 
 	public void Start(){
 		SetOuts(0);
@@ -44,28 +48,29 @@ public class MajorItemsChiron : MonoBehaviour
 	}
 
 	public void SetText(string newText, bool animate = false) {
+		if(animate) textPanel.SetActive(true);
 		text.text = newText;
 	}
 
-
 	public void ShowBase1(bool active, bool animate = false) {
-		base1.gameObject.SetActive(active);
+		base1.sprite = active ? OnBaseImage : OffBaseImage;
 	}
 	public void ShowBase2(bool active, bool animate = false) {
-		base2.gameObject.SetActive(active);
+		base2.sprite = active ? OnBaseImage : OffBaseImage;
 	}
 	public void ShowBase3(bool active, bool animate = false) {
-		base3.gameObject.SetActive(active);
+		base3.sprite = active ? OnBaseImage : OffBaseImage;
 	}
 
 	public void SetOuts(int outs, bool animate = false) {
-		out1.gameObject.SetActive(outs >= 1);
-		out2.gameObject.SetActive(outs >= 2);
-		out3.gameObject.SetActive(outs >= 3);
+		out1.sprite = outs >= 1 ? OnLightImage : OffLightImage;
+		out2.sprite = outs >= 2 ? OnLightImage : OffLightImage;
+		out3.sprite = outs >= 3 ? OnLightImage : OffLightImage;
 	}
 
 	public void ToggleText(bool v)
 	{
+		textPanel.SetActive(v);
 	}
 
 	public void ToggleMajorItems(bool v)
@@ -73,15 +78,15 @@ public class MajorItemsChiron : MonoBehaviour
 	}
 
 	public void SetBalls(int balls, bool animate = false) {
-		ball1.gameObject.SetActive(balls >= 1);
-		ball2.gameObject.SetActive(balls >= 2);
-		ball3.gameObject.SetActive(balls >= 3);
-		ball4.gameObject.SetActive(balls >= 4);
+		ball1.sprite = balls >= 1 ? OnLightImage : OffLightImage;
+		ball2.sprite = balls >= 2 ? OnLightImage : OffLightImage;
+		ball3.sprite = balls >= 3 ? OnLightImage : OffLightImage;
+		ball4.sprite = balls >= 4 ? OnLightImage : OffLightImage;
 	}
 
 	public void SetStrikes(int strikes, bool animate = false) {
-		strike1.gameObject.SetActive(strikes >= 1);
-		strike2.gameObject.SetActive(strikes >= 2);
-		strike3.gameObject.SetActive(strikes >= 3);
+		strike1.sprite = strikes >= 1 ? OnLightImage : OffLightImage;
+		strike2.sprite = strikes >= 2 ? OnLightImage : OffLightImage;
+		strike3.sprite = strikes >= 3 ? OnLightImage : OffLightImage;
 	}
 }

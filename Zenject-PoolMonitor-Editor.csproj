@@ -50,11 +50,11 @@
      <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\DebugWindow\MpmWindow.cs" />
      <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\MpmSettingsInstaller.cs" />
      <None Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\Zenject-PoolMonitor-Editor.asmdef" />
- <Reference Include="UnityEngine.UI">
- <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
- </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.UI">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.TestRunner">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>

@@ -59,6 +59,13 @@ namespace blaseball.file {
 		/// </summary>
 		/// <param name="teamID">The player ID</param>
 		/// <returns>The expected filepath for the custom model</returns>
-		string GetPlayerCustomModel(string playerID);
+		string GetPlayerCustomModelPath(string playerID);
+		/// <summary>
+		/// Get the file path for the player's custom Tlopps Baseball Card
+		/// Generally it will be located at {applicationConfig.RootDirectory}blaseball/{league.id}/player/{playerID}/card.png
+		/// </summary>
+		/// <param name="teamID">The player ID</param>
+		/// <returns>The expected filepath for the Tlopps Card</returns>
+		string GetPlayerTloppsCard(string playerID);
 	}
 }

@@ -7,12 +7,24 @@ using UnityEngine;
 
 public class TVCameraGraphicsMasterControl : MonoBehaviour
 {
+	[SerializeField] protected ScoringPanel scoringPanel;
+	//[SerializeField] protected TechnicalDifficultiesChiron technicalDifficultiesChiron;
+	[SerializeField] protected PlayerInformationChiron playerInformationChiron;
+	[SerializeField] protected MajorItemsChiron majorItemsChiron;
 	public RewindPanel rewindPanel;
-	public TechnicalDifficultiesChiron technicalDifficultiesChiron;
-	public PlayerInformationChiron playerInformationChiron;
-	public MajorItemsChiron majorItemsChiron;
+
+
+	void Setup(BBGameState gameState) {
+		scoringPanel.Setup(gameState);
+	}
+
+	internal void UpdateScores(BBGameState gameState)
+	{
+		scoringPanel.Setup(gameState);
+	}
+
 	public void ClearAllGraphics() {
-		technicalDifficultiesChiron.Hide();
+		//technicalDifficultiesChiron.Hide();
 		playerInformationChiron.Hide();
 		majorItemsChiron.Hide();
 	}
@@ -29,13 +41,16 @@ public class TVCameraGraphicsMasterControl : MonoBehaviour
 	public void ShowTechnicalDifficulties(string lastUpdate) {
 		ClearAllGraphics();
 
-		technicalDifficultiesChiron.Show();
-		technicalDifficultiesChiron.ShowText(lastUpdate);
+		majorItemsChiron.Show();
+		majorItemsChiron.SetText(lastUpdate);
+
+		//.Show();
+		//technicalDifficultiesChiron.ShowText(lastUpdate);
 	}
 	public void ShowBatter(BBPlayer player, BBTeam team) {
 		ClearAllGraphics();
 		playerInformationChiron.Show();
-		playerInformationChiron.ShowBatterText(player, team);
+		playerInformationChiron.ShowBatter(player, team);
 	}
 	public void ShowPitcher(BBPlayer player, BBTeam team) {
 		
@@ -102,4 +117,5 @@ public class TVCameraGraphicsMasterControl : MonoBehaviour
 		majorItemsChiron.ShowBase2(Array.IndexOf(state.basesOccupied, 1) > -1);
 		majorItemsChiron.ShowBase3(Array.IndexOf(state.basesOccupied, 2) > -1);
 	}
+
 }

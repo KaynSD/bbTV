@@ -242,6 +242,7 @@ public class GameViewer : MonoBehaviour
 			SetupAndPlay(GetRandomAnimation(technicalDifficulties, caseFail.playIndex));
 			cameraGraphicsMasterControl.ResetPlate(caseFail);
 			cameraGraphicsMasterControl.ShowTechnicalDifficulties(caseFail.gameState.lastUpdate);
+			cameraGraphicsMasterControl.UpdateScores(caseFail.gameState);
 		}
 	}
 
@@ -257,6 +258,7 @@ public class GameViewer : MonoBehaviour
 
 		SetupAndPlay(GetRandomAnimation(newBatterAnimations, play.playIndex));
 		cameraGraphicsMasterControl.ShowBatter(batter, battingTeam);
+		cameraGraphicsMasterControl.UpdateScores(play.gameState);
 	}
 
 	private void Strike(BBStrikePlay play) {
@@ -277,6 +279,8 @@ public class GameViewer : MonoBehaviour
 			HandleTechnicalDifficulties(play);
 			break;
 		}
+
+		cameraGraphicsMasterControl.UpdateScores(play.gameState);
 	}
 	private void StrikeOut(BBStrikeOutPlay play) {
 		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
@@ -300,6 +304,8 @@ public class GameViewer : MonoBehaviour
 			HandleTechnicalDifficulties(play);
 			break;
 		}
+
+		cameraGraphicsMasterControl.UpdateScores(play.gameState);
 	}
 
 	private void BallCount(BBBallPlay play) {
@@ -310,6 +316,7 @@ public class GameViewer : MonoBehaviour
 		SetupPitcher(play.Pitcher(), fieldingTeam.id);
 
 		SetupAndPlay(GetRandomAnimation(ballcountAnimations, play.playIndex));
+		cameraGraphicsMasterControl.UpdateScores(play.gameState);
 	}
 
 	  
@@ -476,7 +483,7 @@ public class GameViewer : MonoBehaviour
 	private CharacterCutsceneControl LoadCharacter(BBPlayer player)
 	{
 		try {
-			var myLoadedAssetBundle = AssetBundle.LoadFromFile(Loader.GetPlayerCustomModel(player.id));
+			var myLoadedAssetBundle = AssetBundle.LoadFromFile(Loader.GetPlayerCustomModelPath(player.id));
 			if (myLoadedAssetBundle == null)
 			{
 				Debug.Log("Failed to load AssetBundle!");
