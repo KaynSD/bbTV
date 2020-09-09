@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1180722433327727227}
   - component: {fileID: 1180722433327727230}
   - component: {fileID: 1180722433327727224}
-  - component: {fileID: 1180722433327727225}
+  - component: {fileID: 2105208826997280342}
+  - component: {fileID: 883479728782061903}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -26,7 +27,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180722433327727226}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -36,8 +37,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -2}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 35}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1180722433327727230
 CanvasRenderer:
@@ -65,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '# CHIF 1 - SFLV 2 the heavily favoured firefighters won the game'
+  m_text: So this is some text right here
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d9c70b677bb9e6340bd1ddf47c589222, type: 2}
   m_sharedMaterial: {fileID: -3942900042397560732, guid: d9c70b677bb9e6340bd1ddf47c589222,
@@ -132,17 +133,17 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 20, y: 0, z: 20, w: 0}
   m_textInfo:
     textComponent: {fileID: 1180722433327727224}
-    characterCount: 64
+    characterCount: 31
     spriteCount: 0
-    spaceCount: 12
-    wordCount: 12
+    spaceCount: 6
+    wordCount: 7
     linkCount: 0
     lineCount: 1
     pageCount: 1
-    materialCount: 2
+    materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -158,7 +159,27 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1180722433327727225
+--- !u!114 &2105208826997280342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180722433327727226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!114 &883479728782061903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
-  m_VerticalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &1180722434165955799
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,6 +202,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1180722434165955796}
+  - component: {fileID: 5450406101022883920}
   - component: {fileID: 1180722434165955802}
   - component: {fileID: 1180722434165955797}
   m_Layer: 5
@@ -210,6 +232,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 47}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &5450406101022883920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180722434165955799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e030d69e2203eb4190cc7d18f9f3b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 100
+  textSample: {fileID: 1180722433327727224}
+  star: {fileID: 3527660242949865097, guid: d70acae1e2687be42bbf1e31fadc6623, type: 3}
 --- !u!222 &1180722434165955802
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -314,7 +351,7 @@ MonoBehaviour:
   m_material: {fileID: 0}
   m_sharedMaterial: {fileID: 0}
   m_isDefaultMaterial: 0
-  m_padding: 1.25
+  m_padding: 0
   m_canvasRenderer: {fileID: 1180722434770674245}
   m_TextComponent: {fileID: 1180722433327727224}
   m_materialReferenceIndex: 1

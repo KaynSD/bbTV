@@ -3614,7 +3614,7 @@ GameObject:
   - component: {fileID: 1011881238}
   - component: {fileID: 1011881237}
   m_Layer: 5
-  m_Name: Base 3
+  m_Name: Base R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3687,7 +3687,7 @@ GameObject:
   - component: {fileID: 1021065939}
   - component: {fileID: 1021065938}
   m_Layer: 5
-  m_Name: Base 1
+  m_Name: Base L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4790,7 +4790,7 @@ GameObject:
   - component: {fileID: 1301431222}
   - component: {fileID: 1301431221}
   m_Layer: 5
-  m_Name: Base 2
+  m_Name: Base U
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5830,9 +5830,9 @@ MonoBehaviour:
   textPanel: {fileID: 1848566606}
   majorItemsPanel: {fileID: 1848566606}
   text: {fileID: 817458363}
-  base1: {fileID: 1021065938}
+  base1: {fileID: 1011881237}
   base2: {fileID: 1301431221}
-  base3: {fileID: 1011881237}
+  base3: {fileID: 1021065938}
   strike1: {fileID: 1786649137}
   strike2: {fileID: 1319955560}
   strike3: {fileID: 988025030}

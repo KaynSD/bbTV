@@ -27,6 +27,7 @@ public class MainController : MonoInstaller
 		Container.Bind<IBlaseballResultsService>().To<JTService>().FromNew().AsSingle().NonLazy();
 		Container.Bind<GameRunner>().FromNew().AsSingle().Lazy();
 		Container.Bind<BBPlaybook>().FromNew().AsSingle().Lazy();
+		Container.Bind<BBAnnouncements>().FromNew().AsSingle().Lazy();
 	}
 
 	public void OnResolved() {

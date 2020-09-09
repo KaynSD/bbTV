@@ -50,6 +50,7 @@
      <Compile Include="Assets\Engine\Sources\Blaseball\File\IBlaseballFileLoader.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\File\JTFileLoader.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\Helper.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\BBAnnouncements.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\BBGame.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\BBPlaybook.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\GameRunner.cs" />
@@ -76,7 +77,6 @@
      <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\UnknownPlay.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\Server\IBlaseballResultsService.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\Server\JTService.cs" />
-     <Compile Include="Assets\Engine\Sources\Blaseball\UI\IUILogger.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBDivision.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBGameState.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBLeague.cs" />
@@ -104,6 +104,8 @@
      <Compile Include="Assets\Engine\Sources\UI\GameViewer\ScoringPanel.cs" />
      <Compile Include="Assets\Engine\Sources\UI\GameViewer\TVCameraGraphicsMasterControl.cs" />
      <Compile Include="Assets\Engine\Sources\UI\GameViewer\TechnicalDifficultiesChiron.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\IUILogger.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\Ticker.cs" />
      <Compile Include="Assets\Engine\Sources\UI\TitleScreen\GameButtonBehaviour.cs" />
      <Compile Include="Assets\Engine\Sources\UI\TitleScreen\LoggingPanel.cs" />
      <Compile Include="Assets\Engine\Sources\UI\TitleScreen\TitleScreen.cs" />

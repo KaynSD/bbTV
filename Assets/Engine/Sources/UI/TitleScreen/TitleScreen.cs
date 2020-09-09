@@ -58,6 +58,7 @@ public class TitleScreen : MonoBehaviour
 
 	public GameObject GameButtonPrefab;
 	List<GameButtonBehaviour> currentGames;
+	private bool updateMessageTexts;
 
 	void Start() {
 		if(config.titleScreenSettings.needsToStartConnection) {
@@ -97,6 +98,13 @@ public class TitleScreen : MonoBehaviour
 
 	}
 
+	void Update() {
+		if(updateMessageTexts) {
+			updateMessageTexts = false;
+			UpdateDatabaseMessageTexts();
+		}
+	}
+
 	public void DownloadDatabase() {
 		UpdateLocalDatablaseButton.enabled = false;
 		UpdateLocalDatablaseButton.GetComponentInChildren<TextMeshProUGUI>().SetText($"updating...\n<size=50%>Downloading Updates...</size>");
@@ -126,10 +134,11 @@ public class TitleScreen : MonoBehaviour
 		Cleanup();
 		LeftMenuRootElement.gameObject.SetActive(true);
 		SettingMenuRootElement.gameObject.SetActive(true);
-		UpdateDatabaseMessageTexts();
+		updateMessageTexts = true;
 	}
 	
 	public void UpdateDatabaseMessageTexts() {
+		updateMessageTexts = false;
 		UpdateLocalDatablaseButton.enabled = true;
 		bool isUptoDate = Helper.isDatabaseOld(database.lastUpdated);
 		
