@@ -20,14 +20,16 @@ public class GameButtonBehaviour : MonoBehaviour
 	[Inject] public GameRunner gameRunner;
 	[Inject] public IBlaseballFileLoader fileLoader;
 
-	public TextMeshProUGUI headerText;
-	public TextMeshProUGUI mainText;
-	public TextMeshProUGUI footerText;
+	[SerializeField] protected TextMeshProUGUI headerText;
+	[SerializeField] protected TextMeshProUGUI mainText;
+	[SerializeField] protected TextMeshProUGUI footerText;
 
-	public Image homeTeam; 
-	public Image awayTeam;
+	[SerializeField] protected Image homeTeam; 
+	[SerializeField] protected Image awayTeam;
 
 	public Button self;
+
+	[SerializeField] protected UICornersGradient gradient;
 
 	public enum GameType {
 		HISTORICAL,
@@ -127,18 +129,33 @@ public class GameButtonBehaviour : MonoBehaviour
 		string homeID = newData.homeTeam;
 		string awayID = newData.awayTeam;
 
-		string homeTeam = database.GetTeam(homeID)?.fullName ?? "Unknown Team";
-		string awayTeam = database.GetTeam(awayID)?.fullName ?? "Unknown Team";
+		BBTeam homeTeam = database.GetTeam(homeID);
+		BBTeam awayTeam = database.GetTeam(awayID);
 
-		string homeColor = database.GetTeam(homeID)?.mainColor ?? "0x666666";
-		string awayColor = database.GetTeam(awayID)?.mainColor ?? "0x666666";
+		string homeTeamName = homeTeam?.fullName ?? "Unknown Team";
+		string awayTeamName = awayTeam?.fullName ?? "Unknown Team";
+
+		string homeColorString = homeTeam?.mainColor ?? "0x666666";
+		string awayColorString = awayTeam?.mainColor ?? "0x666666";
+
+		Color homeColorColor = Color.gray, awayColorColor = Color.gray;
+		ColorUtility.TryParseHtmlString(homeColorString, out homeColorColor);
+		ColorUtility.TryParseHtmlString(awayColorString, out awayColorColor);
+		Color homeColorAlpha = new Color(homeColorColor.r, homeColorColor.g, homeColorColor.b, 0.6f);
+		Color awayColorAlpha = new Color(awayColorColor.r, awayColorColor.g, awayColorColor.b, 0.6f);
+
+		gradient.m_topLeftColor = homeColorColor;
+		gradient.m_topRightColor = awayColorColor;
+		gradient.m_bottomLeftColor = homeColorAlpha;
+		gradient.m_bottomRightColor = awayColorAlpha;
+		
 
 		headerText.text = $"{leagueName}, {season}, {day}; {series}"; 
 
 		if(gameType == GameType.FORECAST) {
-			mainText.text = $"{homeTeam} <b>v</b> {awayTeam}";
+			mainText.text = $"{homeTeamName} <b>v</b> {awayTeamName}";
 		} else {
-			mainText.text = $"{homeTeam} <b><color={homeColor}>{newData.homeScore}</color> v <color={awayColor}>{newData.awayScore}</color></b> {awayTeam} ";
+			mainText.text = $"{homeTeamName} <b><color={homeColorString}>{newData.homeScore}</color> v <color={awayColorString}>{newData.awayScore}</color></b> {awayTeamName} ";
 		}
 
 		string footerTextChange =  $"Weather: {Helper.GetWeather(newData.weather)}";

@@ -6,4 +6,9 @@ public class ApplicationConfig {
 	public string RootDirectory = Application.streamingAssetsPath;
 	public string DatabaseLocation {get => $"{RootDirectory}/data.db"; }
 
+	public string VersionNumber {get => Application.version;}
+	public string VersionName;
+
+	public TitleScreenSettings titleScreenSettings = new TitleScreenSettings();
+
 }

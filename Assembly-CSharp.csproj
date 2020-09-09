@@ -45,7 +45,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Engine\Sources\ApplicationConfig.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\DB\IBlaseballDatabase.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\DB\JTDatabase.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\File\IBlaseballFileLoader.cs" />
@@ -87,6 +86,7 @@
      <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBSubleague.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBTeam.cs" />
      <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBTomorrowsGames.cs" />
+     <Compile Include="Assets\Engine\Sources\Constants\Constants.cs" />
      <Compile Include="Assets\Engine\Sources\GameViewer\Characters\CameraFacingBillboard.cs" />
      <Compile Include="Assets\Engine\Sources\GameViewer\Characters\CharacterCutsceneControl.cs" />
      <Compile Include="Assets\Engine\Sources\GameViewer\Characters\DefaultCharacterCutsceneControl.cs" />
@@ -95,6 +95,8 @@
      <Compile Include="Assets\Engine\Sources\MainController.cs" />
      <Compile Include="Assets\Engine\Sources\RNG\PRNG.cs" />
      <Compile Include="Assets\Engine\Sources\RNG\ParkMiller.cs" />
+     <Compile Include="Assets\Engine\Sources\Settings\ApplicationConfig.cs" />
+     <Compile Include="Assets\Engine\Sources\Settings\TitleScreenSettings.cs" />
      <Compile Include="Assets\Engine\Sources\TestLoad.cs" />
      <Compile Include="Assets\Engine\Sources\UI\GameViewer\MajorItemsChiron.cs" />
      <Compile Include="Assets\Engine\Sources\UI\GameViewer\PlayerInformationChiron.cs" />
@@ -743,6 +745,10 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{98C5D9F7-BDF7-89BC-D34A-EED81B1EA96E}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
     <ProjectReference Include="Zenject-Editor.csproj">
       <Project>{871ED71D-7FC5-1E87-C1CF-BB364769CD05}</Project>
       <Name>Zenject-Editor</Name>

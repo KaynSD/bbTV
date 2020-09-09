@@ -23,6 +23,10 @@ namespace blaseball {
 		public static string GetLastUpdatedText(int databaseUpdated) {
 			return new DateTime(1970, 1, 1).AddSeconds(databaseUpdated).ToString();
 		}
+		public static bool isDatabaseOld(int databaseUpdated) {
+			TimeSpan age = DateTime.Now.Subtract(new DateTime(1970, 1, 1).AddSeconds(databaseUpdated));
+			return age.TotalDays > 3;
+		}
 
 		/// <summary>
 		/// Get the Unix Timestamp

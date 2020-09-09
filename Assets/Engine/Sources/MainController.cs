@@ -16,6 +16,7 @@ public class MainController : MonoInstaller
 	public override void InstallBindings() {
 		configuration = new ApplicationConfig();
 
+		configuration.VersionName = "Jessica Telephone";
 		Container.Bind<ApplicationConfig>().FromInstance(configuration).AsSingle();
 
 		Container.Bind<IUILogger>().FromComponentInNewPrefabResource("Logging Panel").AsSingle().NonLazy();
@@ -29,7 +30,7 @@ public class MainController : MonoInstaller
 	}
 
 	public void OnResolved() {
-		SceneManager.LoadScene("Title Scene");
+		SceneManager.LoadScene(Constants.SCENE_TITLE);
 	}
 
 

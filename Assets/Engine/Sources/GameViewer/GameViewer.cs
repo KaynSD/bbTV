@@ -83,7 +83,7 @@ public class GameViewer : MonoBehaviour
 
 		game = gameRunner.getFocusedGame();
 		if(game == null){
-			SceneManager.LoadScene("Title Scene");
+			SceneManager.LoadScene(Constants.SCENE_TITLE);
 			return;
 		}
 
@@ -130,7 +130,7 @@ public class GameViewer : MonoBehaviour
 	}
 
 	public void Quit() {
-		SceneManager.LoadScene("Title Scene");
+		SceneManager.LoadScene(Constants.SCENE_TITLE);
 	}
 
 	private void RewindToPoint(int value) {

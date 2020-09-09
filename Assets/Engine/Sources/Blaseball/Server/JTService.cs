@@ -124,9 +124,9 @@ namespace blaseball.service {
 			// Create League Information
 			if(options == DatabaseConfigurationOptions.COMPLETE || (options & DatabaseConfigurationOptions.LEAGUE) == DatabaseConfigurationOptions.LEAGUE) {
 				if(league == "") {
-					league = "d8545021-e9fc-48a3-af74-48685950a183";
+					league = Constants.BLASEBALL_LEAGUE_ID;
 				}
-				string leagueInformation = Download($"https://blaseball.com/database/league?id={league}");
+				string leagueInformation = Download($"{Constants.URL_BLASEBALL}database/league?id={league}");
 				if(leagueInformation == "") {
 					OnDatabaseFailed?.Invoke();
 					return;

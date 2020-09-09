@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using blaseball;
 using blaseball.db;
+using blaseball.file;
 using blaseball.runtime;
 using blaseball.service;
 using blaseball.vo;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,34 +19,71 @@ public class TitleScreen : MonoBehaviour
 {
 	[Inject] public IBlaseballDatabase database;
 	[Inject]	public IBlaseballResultsService service;
+	[Inject]	public IBlaseballFileLoader loader;
+	[Inject]	public ApplicationConfig config;
 	[Inject]	public GameRunner gameRunner;
 
+	[Header("Everything")]
+	public TextMeshProUGUI SplashCredits;
+
+	[Header("Splash")]
+	[SerializeField] protected RectTransform SplashRootElement;
+	[SerializeField] protected TextMeshProUGUI SplashTagline;
+	[SerializeField] protected Button SplashButton;
+
+	[Header("Main Menu")]
+	[SerializeField] protected RectTransform LeftMenuRootElement;
+	[SerializeField] protected RectTransform SettingMenuRootElement;
+	[SerializeField] protected Button CurrentGamesButton;
+	[SerializeField] protected Button FutureGamesButton;
+	[SerializeField] protected TextMeshProUGUI DatablaseUpdateText;
+	[SerializeField] protected Button HistoricalGamesButton;
+	[SerializeField] protected Button UpdateLocalDatablaseButton;
+	[SerializeField] protected Button OpenLocalFolderButton;
+	[SerializeField] protected Button GotoBlaseballButton;
+	[SerializeField] protected Button GotoRepositoryButton;
+
+	[Header("Current Games")]
+	[SerializeField] RectTransform CurrentGamesRootElement;
+	[SerializeField] protected Transform currentGameList;
+
+	[Header("Future Games")]
+	[SerializeField] RectTransform FutureGamesRootElement;
+	[SerializeField] protected Transform futureGameList;
+	[Header("Historical Games")]
+	[SerializeField] RectTransform HistoricalGamesRootElement;
+	[SerializeField] protected Transform historicalGameList;
+
+	[Header("Other")]
 
 	public GameObject GameButtonPrefab;
-	public Transform currentGameList;
-	public Transform futureGameList;
-	public Transform historicalGameList;
-
 	List<GameButtonBehaviour> currentGames;
 
-	public List<GameObject> AllPanels;
-
-	public TextMeshProUGUI lastDatabaseUpdateText;
-
 	void Start() {
-		database.Load();
-		service.Connect();
-		lastDatabaseUpdateText.SetText($"Last Cleaned: {Helper.GetLastUpdatedText(database.lastUpdated)}");
+		if(config.titleScreenSettings.needsToStartConnection) {
+			database.Load();
+			service.Connect();
+		}
+
+		service.OnDatabaseCreated += UpdateDatabaseMessageTexts;
+		service.OnIncomingData += RefreshDisplay;
+
+		if(config.titleScreenSettings.bypassSplashScreen) {
+			ShowMainMenu();
+		} else {
+			ShowSplashScreen();
+		}
+		
 	
 		currentGames = new List<GameButtonBehaviour>();
 
-		HideAllPanels();
-		RefreshDisplay();
-		service.OnIncomingData += RefreshDisplay;
+		//HideAllPanels();
+		//RefreshDisplay();
 
 		//"d48564ae-6013-412c-8e2b-21fa73245b08";
 
 		// Temporary Historical Game
+		/*
 		try {
 			var gameFile = Resources.Load<TextAsset>("d48564ae-6013-412c-8e2b-21fa73245b08");
 			BBReplay replay = JsonUtility.FromJson<BBReplay>(gameFile.text);
@@ -53,37 +93,95 @@ public class TitleScreen : MonoBehaviour
 		} catch (Exception c) {
 			Debug.Log(c);
 		}
+		*/
 
 	}
-	private void HideAllPanels()
-	{
-		foreach(GameObject panel in AllPanels) {
-			panel.SetActive(false);
+
+	public void DownloadDatabase() {
+		UpdateLocalDatablaseButton.enabled = false;
+		UpdateLocalDatablaseButton.GetComponentInChildren<TextMeshProUGUI>().SetText($"updating...\n<size=50%>Downloading Updates...</size>");
+
+		service.BuildDatabase("", DatabaseConfigurationOptions.COMPLETE);
+	}
+
+	public void StartService() {
+		service.Connect();
+	}
+
+	void OnDestroy() {
+		service.OnDatabaseCreated -= UpdateDatabaseMessageTexts;
+		service.OnIncomingData -= RefreshDisplay;
+	}
+
+	protected void Cleanup() {
+		SplashRootElement.gameObject.SetActive(false);
+		LeftMenuRootElement.gameObject.SetActive(false);
+		SettingMenuRootElement.gameObject.SetActive(false);
+		CurrentGamesRootElement.gameObject.SetActive(false);
+		FutureGamesRootElement.gameObject.SetActive(false);
+		HistoricalGamesRootElement.gameObject.SetActive(false);
+	}
+
+	public void ShowMainMenu () {
+		Cleanup();
+		LeftMenuRootElement.gameObject.SetActive(true);
+		SettingMenuRootElement.gameObject.SetActive(true);
+		UpdateDatabaseMessageTexts();
+	}
+	
+	public void UpdateDatabaseMessageTexts() {
+		UpdateLocalDatablaseButton.enabled = true;
+		bool isUptoDate = Helper.isDatabaseOld(database.lastUpdated);
+		
+		if(isUptoDate) {
+			DatablaseUpdateText.text = Constants.REMINDER_UPDATE_DATABLASE;
+			UpdateLocalDatablaseButton.GetComponentInChildren<TextMeshProUGUI>().SetText($"update local datablase\n<size=50%><color=red>Last Updated: {Helper.GetLastUpdatedText(database.lastUpdated)}</color></size>");
+		} else {
+			DatablaseUpdateText.text ="";
+			UpdateLocalDatablaseButton.GetComponentInChildren<TextMeshProUGUI>().SetText($"update local datablase\n<size=50%>Last Updated: {Helper.GetLastUpdatedText(database.lastUpdated)}</size>");
 		}
 	}
 
+	public void OpenLocalFolder() {
+		string itemPath = Path.Combine(config.RootDirectory, "blaseball");
+		EditorUtility.RevealInFinder(itemPath);
+	}
+	public void OpenBlaseballWebsite() => Application.OpenURL(Constants.URL_BLASEBALL);
+	public void OpenBBTVRepo() => Application.OpenURL(Constants.URL_REPO);
+
+	protected void ShowSplashScreen () {
+		Cleanup();
+		SplashRootElement.gameObject.SetActive(true);
+		// Setup Splash Screen
+		SplashTagline.text = "The Commissioner is Still Doing A Great Job";
+		SplashCredits.text = $"V{config.VersionNumber} - {config.VersionName}\n{Constants.CREDITS}";
+	}
+	public void EndSplashScreen() {
+		config.titleScreenSettings.bypassSplashScreen = true;
+		ShowMainMenu();
+	}
 
 	public void ShowCurrentGames() {
-		HideAllPanels();
-		AllPanels[0].SetActive(true);
+		Cleanup();
+		CurrentGamesRootElement.gameObject.SetActive(true);
 	}
 	public void ShowForecastGames() {
-		HideAllPanels();
-		AllPanels[1].SetActive(true);
+		Cleanup();
+		FutureGamesRootElement.gameObject.SetActive(true);
 	}
 	public void ShowHistoricalGames() {
-		HideAllPanels();
-		AllPanels[2].SetActive(true);
+		Cleanup();
+		HistoricalGamesRootElement.gameObject.SetActive(true);
 	}
+
 	public void Exit() {
 		Application.Quit();
 	}
 
 	public void ViewGame(GameButtonBehaviour button) {
 		Debug.Log($"Loading Game: {button.GameID}");
-		service.OnIncomingData -= RefreshDisplay;
 		gameRunner.GameIDFocus = button.GameID;
-		SceneManager.LoadScene("ViewerScene");
+		SceneManager.LoadScene(Constants.SCENE_VIEWER);
 	}
 
 	private void RefreshDisplay() {
@@ -126,13 +224,5 @@ public class TitleScreen : MonoBehaviour
 
 		}
 
-	}
-
-	public void DownloadDatabase() {
-		service.BuildDatabase("", DatabaseConfigurationOptions.COMPLETE);
-	}
-
-	public void StartService() {
-		service.Connect();
 	}
 }
