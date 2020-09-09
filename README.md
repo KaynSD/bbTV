@@ -1,7 +1,6 @@
 # Blaseball TV
 Blaseball TV Viewer, written in C# for Unity 2019.3
-
-Not ready for the big time yet; just here in case something goes wrong!
+Download the latest release in the panel to the right to try it out today!
 
 ## Features
 * **Datablase Scraper**; Copies relevant stats from the datablase in a gradual fashion to keep load on the site low
@@ -10,9 +9,8 @@ Not ready for the big time yet; just here in case something goes wrong!
 * **User Customisation**; each league, subleague, division, team and player gets it's own folder for placement of Tlopps card, textures and images for use within the game. Fully customise your own blaseball viewing experience!
 
 ## TODO
-* **A Functioning, Pretty User Interface**, needing a proper sports graphics package artist to take a look at this. Interface full stop needs to be improved
 * **Bug Fixing**, there's a few bugs, leaks, and undisposed listeners that will need tidying up before an actual release can be made
-* **Loading Models**, should be possible with AssetBundles (same way to how VRChat handles them), and functionality is ready in place for swapping out assets in the cutscenes. Just needs to be gracefully handled, and some examples needed
+* **Loading Models**, IS possible with assetbundles given the code included, but needs documenting and made easier for third party developers
 * **QOL Features**, opening user directories, browsing teams, etc.
 * **Remaining Cutscenes**, as of right now there is only a catch all Technical Difficulties, a step up to plate, and a pair of strike animations. 
 * **Better Machinima**, I'm good, but not great. Plus more variety of cutscenes will make the application better for everyone. Bats and balls and other things attach points in the model animations setting up as well, and I'm pretty sure I've aligned everything very badly.
@@ -26,3 +24,5 @@ Not ready for the big time yet; just here in case something goes wrong!
     * [EvtSource](https://github.com/3ventic/EvtSource) for Server-Sent Event connection
 
 Current Maintainer: [@kaynSD](https://twitter.com/kaynSD)
+Massive Thanks to: 
+* [@4damAvenue](https://twitter.com/4damAvenue), Adam Streeter, for the amazing logo artwork (used with permission!)
