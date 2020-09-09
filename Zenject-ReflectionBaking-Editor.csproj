@@ -262,12 +262,6 @@
  <Reference Include="UnityEditor.WebGL.Extensions">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
  </Reference>
- <Reference Include="DotNetZip">
- <HintPath>D:/Projects/blaseballTV/Assets/NuGet/Editor/DotNetZip.dll</HintPath>
- </Reference>
- <Reference Include="NugetForUnity">
- <HintPath>D:/Projects/blaseballTV/Assets/NuGet/Editor/NugetForUnity.dll</HintPath>
- </Reference>
  <Reference Include="EvtSource">
  <HintPath>D:/Projects/blaseballTV/Assets/Packages/3v.EvtSource.2.0.0/lib/netstandard2.0/EvtSource.dll</HintPath>
  </Reference>
@@ -306,6 +300,12 @@
  </Reference>
  <Reference Include="Zenject-usage">
  <HintPath>D:/Projects/blaseballTV/Assets/Plugins/Zenject/Source/Usage/Zenject-usage.dll</HintPath>
+ </Reference>
+ <Reference Include="NugetForUnity">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/NuGet/Editor/NugetForUnity.dll</HintPath>
+ </Reference>
+ <Reference Include="DotNetZip">
+ <HintPath>D:/Projects/blaseballTV/Assets/Plugins/NuGet/Editor/DotNetZip.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
  <HintPath>D:/Projects/blaseballTV/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

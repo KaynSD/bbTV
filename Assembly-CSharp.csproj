@@ -45,109 +45,90 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\ILB2Kayn20\Sources\ApplicationConfig.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\IBlaseballDatabase.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\DB\JTDatabase.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\File\IBlaseballFileLoader.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\File\JTFileLoader.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Helper.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\BBGame.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\BBPlaybook.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\GameRunner.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\BBAbstractPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\BBAbstractPlayerPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBDrawsAWalkPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBFieldersChoice.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBHomeRunPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBRunsPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBSacrificePlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Bases\BBStealsBasePlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Changeups\BBBatterAtPlatePlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Changeups\BBBottomOfInningPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Changeups\BBTopOfInningPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\GameStartAndEnd\GameOverPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\GameStartAndEnd\StartGamePlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBCaughtStealingPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBFlyoutPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBGroundOutPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\BBStrikeOutPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\BBBallPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\BBFoulBall.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\BBStrikePlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\UnknownPlay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Server\IBlaseballResultsService.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\Server\JTService.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\UI\IUILogger.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBDivision.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBGameState.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBLeague.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBPlayer.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBReplay.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBScheduleUpdate.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBSubleague.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTeam.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Blaseball\ValueObjects\BBTomorrowsGames.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Characters\CameraFacingBillboard.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Characters\CharacterCutsceneControl.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Characters\DefaultCharacterCutsceneControl.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Characters\NPCCharacterCutsceneControl.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\GameViewer.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\MainController.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\TestLoad.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\GameButtonBehaviour.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\LoggingPanel.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\MajorItemsChiron.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\PlayerInformationChiron.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\RewindPanel.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\ScoringPanel.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\TVCameraGraphicsMasterControl.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\TechnicalDifficultiesChiron.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\UI\TitleScreen.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Utility\FindDeepChild.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\Utility\Serializer.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\kaynSD\PRNG.cs" />
-     <Compile Include="Assets\ILB2Kayn20\Sources\kaynSD\ParkMiller.cs" />
+     <Compile Include="Assets\Engine\Sources\ApplicationConfig.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\DB\IBlaseballDatabase.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\DB\JTDatabase.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\File\IBlaseballFileLoader.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\File\JTFileLoader.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Helper.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\BBGame.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\BBPlaybook.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\GameRunner.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\BBAbstractPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\BBAbstractPlayerPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Bases\BBDrawsAWalkPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Bases\BBFieldersChoice.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Bases\BBHomeRunPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Bases\BBRunsPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Bases\BBSacrificePlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Bases\BBStealsBasePlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Changeups\BBBatterAtPlatePlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Changeups\BBBottomOfInningPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Changeups\BBTopOfInningPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\GameStartAndEnd\GameOverPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\GameStartAndEnd\StartGamePlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Outs\BBCaughtStealingPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Outs\BBFlyoutPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Outs\BBGroundOutPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Outs\BBStrikeOutPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Pitches\BBBallPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Pitches\BBFoulBall.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Pitches\BBStrikePlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\UnknownPlay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Server\IBlaseballResultsService.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\Server\JTService.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\UI\IUILogger.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBDivision.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBGameState.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBLeague.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBPlayer.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBReplay.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBScheduleUpdate.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBSubleague.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBTeam.cs" />
+     <Compile Include="Assets\Engine\Sources\Blaseball\ValueObjects\BBTomorrowsGames.cs" />
+     <Compile Include="Assets\Engine\Sources\GameViewer\Characters\CameraFacingBillboard.cs" />
+     <Compile Include="Assets\Engine\Sources\GameViewer\Characters\CharacterCutsceneControl.cs" />
+     <Compile Include="Assets\Engine\Sources\GameViewer\Characters\DefaultCharacterCutsceneControl.cs" />
+     <Compile Include="Assets\Engine\Sources\GameViewer\Characters\NPCCharacterCutsceneControl.cs" />
+     <Compile Include="Assets\Engine\Sources\GameViewer\GameViewer.cs" />
+     <Compile Include="Assets\Engine\Sources\MainController.cs" />
+     <Compile Include="Assets\Engine\Sources\RNG\PRNG.cs" />
+     <Compile Include="Assets\Engine\Sources\RNG\ParkMiller.cs" />
+     <Compile Include="Assets\Engine\Sources\TestLoad.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\GameViewer\MajorItemsChiron.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\GameViewer\PlayerInformationChiron.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\GameViewer\RewindPanel.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\GameViewer\ScoringPanel.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\GameViewer\TVCameraGraphicsMasterControl.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\GameViewer\TechnicalDifficultiesChiron.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\TitleScreen\GameButtonBehaviour.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\TitleScreen\LoggingPanel.cs" />
+     <Compile Include="Assets\Engine\Sources\UI\TitleScreen\TitleScreen.cs" />
+     <Compile Include="Assets\Engine\Sources\Utility\FindDeepChild.cs" />
+     <Compile Include="Assets\Engine\Sources\Utility\Serializer.cs" />
      <None Include="Assets\Packages\System.Numerics.Vectors.4.4.0\useSharedDesignerContext.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\Packages\System.Reflection.Emit.Lightweight.4.7.0\version.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
      <None Include="Assets\Packages\System.Reflection.Emit.ILGeneration.4.7.0\lib\netstandard2.0\System.Reflection.Emit.ILGeneration.xml" />
      <None Include="Assets\Packages\System.Numerics.Vectors.4.4.0\version.txt" />
-     <None Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Pitches\todo.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+     <None Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Pitches\todo.txt" />
      <None Include="Assets\Packages\System.Memory.4.5.4\lib\netstandard2.0\System.Memory.xml" />
      <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\useSharedDesignerContext.txt" />
      <None Include="Assets\Packages\System.Reflection.Emit.Lightweight.4.7.0\lib\netstandard2.0\System.Reflection.Emit.Lightweight.xml" />
      <None Include="Assets\Packages\System.Reflection.Emit.ILGeneration.4.7.0\version.txt" />
      <None Include="Assets\Packages\System.Buffers.4.5.1\version.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.xml" />
-     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
-     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
      <None Include="Assets\Packages\System.Numerics.Vectors.4.4.0\lib\netstandard2.0\System.Numerics.Vectors.xml" />
-     <None Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Outs\todo.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+     <None Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Outs\todo.txt" />
      <None Include="Assets\Packages\System.Reflection.Emit.Lightweight.4.7.0\useSharedDesignerContext.txt" />
-     <None Include="Assets\ILB2Kayn20\Sources\Blaseball\Runtime\Plays\Oddness\todo.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+     <None Include="Assets\Engine\Sources\Blaseball\Runtime\Plays\Oddness\todo.txt" />
      <None Include="Assets\Packages\System.Memory.4.5.4\useSharedDesignerContext.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
      <None Include="Assets\Packages\System.Reflection.Emit.ILGeneration.4.7.0\useSharedDesignerContext.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\Packages\System.Memory.4.5.4\version.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
-     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
      <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\version.txt" />
      <None Include="Assets\Packages\Newtonsoft.Json.12.0.3\lib\netstandard2.0\Newtonsoft.Json.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
      <None Include="Assets\Packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
      <None Include="Assets\Packages\System.Buffers.4.5.1\useSharedDesignerContext.txt" />
-     <None Include="Assets\TextMesh Pro\Fonts\Lora-OFL.txt" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -172,6 +153,9 @@
  <Reference Include="Unity.Rider.Editor">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.2D.Sprite.Editor">
+ <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="com.unity.cinemachine.editor">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
  </Reference>
@@ -180,9 +164,6 @@
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
- </Reference>
- <Reference Include="Unity.2D.Sprite.Editor">
- <HintPath>D:/Projects/blaseballTV/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.0f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
