@@ -16,7 +16,9 @@ namespace blaseball.ui {
 		public ScrollRect scrollRect;
 		public GameObject root;
 
+		public bool IsActive {get; protected set;}
 		void Start() {
+			Close();
 		}
 		public void Log(string line) {
 			textToAppend +=$"\n{line}";
@@ -24,13 +26,23 @@ namespace blaseball.ui {
 
 		public void Open() {
 			root.SetActive(true);
+			IsActive = true;
 		}
 
 		public void Close() {
 			root.SetActive(false);
+			IsActive = false;
 		}
 
 		void Update() {
+			if(Input.GetKeyDown(KeyCode.L)) {
+				if(IsActive) {
+					Close();
+				} else{
+					Open();
+				}
+			}
+
 			if(textToAppend == "") return;
 			text.text += textToAppend;
 			textToAppend = "";

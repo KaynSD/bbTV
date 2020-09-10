@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using blaseball;
@@ -9,7 +8,6 @@ using blaseball.runtime;
 using blaseball.service;
 using blaseball.vo;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,6 +19,7 @@ public class TitleScreen : MonoBehaviour
 	[Inject]	public IBlaseballResultsService service;
 	[Inject]	public IBlaseballFileLoader loader;
 	[Inject]	public ApplicationConfig config;
+	[Inject]	public BBAnnouncements announcements;
 	[Inject]	public GameRunner gameRunner;
 
 	[Header("Everything")]
@@ -66,7 +65,7 @@ public class TitleScreen : MonoBehaviour
 			service.Connect();
 		}
 
-		service.OnDatabaseCreated += UpdateDatabaseMessageTexts;
+		service.OnDatabaseCreated += RefreshDisplay;
 		service.OnIncomingData += RefreshDisplay;
 
 		if(config.titleScreenSettings.bypassSplashScreen) {
@@ -117,7 +116,7 @@ public class TitleScreen : MonoBehaviour
 	}
 
 	void OnDestroy() {
-		service.OnDatabaseCreated -= UpdateDatabaseMessageTexts;
+		service.OnDatabaseCreated -= RefreshDisplay;
 		service.OnIncomingData -= RefreshDisplay;
 	}
 
@@ -153,7 +152,7 @@ public class TitleScreen : MonoBehaviour
 
 	public void OpenLocalFolder() {
 		string itemPath = Path.Combine(config.RootDirectory, "blaseball");
-		EditorUtility.RevealInFinder(itemPath);
+		//EditorUtility.RevealInFinder(itemPath);
 	}
 	public void OpenBlaseballWebsite() => Application.OpenURL(Constants.URL_BLASEBALL);
 	public void OpenBBTVRepo() => Application.OpenURL(Constants.URL_REPO);
@@ -162,7 +161,7 @@ public class TitleScreen : MonoBehaviour
 		Cleanup();
 		SplashRootElement.gameObject.SetActive(true);
 		// Setup Splash Screen
-		SplashTagline.text = "The Commissioner is Still Doing A Great Job";
+		SplashTagline.text = announcements.GetAnnouncement(true);
 		SplashCredits.text = $"V{config.VersionNumber} - {config.VersionName}\n{Constants.CREDITS}";
 	}
 	public void EndSplashScreen() {

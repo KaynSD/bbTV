@@ -253,8 +253,8 @@ public class GameViewer : MonoBehaviour
 		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		
-		SetupBatter(play.Batter(), battingTeam.id);
-		SetupCatcher(Database.GetPlayer(fieldingTeam.lineup[8]), fieldingTeam.id);
+		SetupBatter(play.Batter(), battingTeam?.id ?? "-1");
+		SetupCatcher(Database.GetPlayer(fieldingTeam?.lineup[8] ?? "-1"), fieldingTeam?.id ?? "-1");
 
 		SetupAndPlay(GetRandomAnimation(newBatterAnimations, play.playIndex));
 		cameraGraphicsMasterControl.ShowBatter(batter, battingTeam);
@@ -265,8 +265,8 @@ public class GameViewer : MonoBehaviour
 		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		
-		SetupBatter(play.Batter(), battingTeam.id);
-		SetupPitcher(play.Pitcher(), fieldingTeam.id);
+		SetupBatter(play.Batter(), battingTeam?.id ?? "-1" );
+		SetupPitcher(play.Pitcher(), fieldingTeam?.id ?? "-1");
 
 		switch(play.TypeOfStrike){
 			case BBStrikePlay.Strike.LOOKING :
@@ -312,8 +312,8 @@ public class GameViewer : MonoBehaviour
 		BBTeam battingTeam = Database.GetTeam(play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		BBTeam fieldingTeam = Database.GetTeam(!play.gameState.topOfInning ? play.gameState.awayTeam : play.gameState.homeTeam);
 		
-		SetupBatter(play.Batter(), battingTeam.id);
-		SetupPitcher(play.Pitcher(), fieldingTeam.id);
+		SetupBatter(play.Batter(), battingTeam?.id ?? "Unknown");
+		SetupPitcher(play.Pitcher(), fieldingTeam?.id ?? "Unknown");
 
 		SetupAndPlay(GetRandomAnimation(ballcountAnimations, play.playIndex));
 		cameraGraphicsMasterControl.UpdateScores(play.gameState);
@@ -332,15 +332,15 @@ public class GameViewer : MonoBehaviour
 		Color teamColorMain = Color.white;
 		Color teamColorSecond = Color.white;
 
-		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
-		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
+		ColorUtility.TryParseHtmlString(team?.mainColor ?? "#999999", out teamColorMain);
+		ColorUtility.TryParseHtmlString(team?.secondaryColor ?? "#dddddd", out teamColorSecond);
 
 		Debug.Log($"Setting Up Batter: {player}");
 		Bat.gameObject.SetActive(true);
 
 		Bat.SetParent(GetBatter(player).LeftHandAttachmentReference, false);
 
-		GetBatter(player).SetPlayerName(player.name);
+		GetBatter(player).SetPlayerName(player?.name ?? "Unknown Player");
 		GetBatter(player).SetPrimaryColor(teamColorMain);
 		GetBatter(player).SetSecondaryColor(teamColorSecond);
 	}
@@ -357,10 +357,10 @@ public class GameViewer : MonoBehaviour
 		Color teamColorMain = Color.white;
 		Color teamColorSecond = Color.white;
 
-		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
-		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
+		ColorUtility.TryParseHtmlString(team?.mainColor ?? "#999999", out teamColorMain);
+		ColorUtility.TryParseHtmlString(team?.secondaryColor ?? "#dddddd", out teamColorSecond);
 
-		GetPitcher(player).SetPlayerName(player.name);
+		GetPitcher(player).SetPlayerName(player?.name ?? "Unknown Player");
 		GetPitcher(player).SetPrimaryColor(teamColorMain);
 		GetPitcher(player).SetSecondaryColor(teamColorSecond);
 	}
@@ -377,10 +377,10 @@ public class GameViewer : MonoBehaviour
 		Color teamColorMain = Color.white;
 		Color teamColorSecond = Color.white;
 
-		ColorUtility.TryParseHtmlString(team.mainColor, out teamColorMain);
-		ColorUtility.TryParseHtmlString(team.secondaryColor, out teamColorSecond);
+		ColorUtility.TryParseHtmlString(team?.mainColor ?? "#999999", out teamColorMain);
+		ColorUtility.TryParseHtmlString(team?.secondaryColor ?? "#dddddd", out teamColorSecond);
 
-		GetCatcher(player).SetPlayerName(player.name);
+		GetCatcher(player).SetPlayerName(player?.name ?? "Unknown Player");
 		GetCatcher(player).SetPrimaryColor(teamColorMain);
 		GetCatcher(player).SetSecondaryColor(teamColorSecond);
 	}

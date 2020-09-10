@@ -40,7 +40,7 @@ public class Ticker : MonoBehaviour
 				newElement = (RectTransform)e.transform;
 			} else {
 				TextMeshProUGUI t = Instantiate(textSample).GetComponent<TextMeshProUGUI>();
-				t.text = announcements.GetAnnouncement();
+				t.text = announcements.GetAnnouncement(false);
 				t.gameObject.SetActive(true);
 				t.transform.SetParent(rect);
 				newElement = (RectTransform)t.transform;

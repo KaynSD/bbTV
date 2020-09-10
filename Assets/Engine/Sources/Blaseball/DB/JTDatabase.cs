@@ -38,7 +38,7 @@ namespace blaseball.db {
 		public bool Save()
 		{
 			Serializer.Save<JTDatabase>(applicationConfig.DatabaseLocation, this);
-			Logger.Log("Datablase Saved");
+			Logger.Log($"Datablase Saved to {applicationConfig.DatabaseLocation}");
 			return true;
 		}
 
@@ -61,6 +61,7 @@ namespace blaseball.db {
 
 			Logger.Log($"Datablase loaded, League is: {GetLeague().name} ({GetLeague().id})");
 			Logger.Log($"Datablase Last Cleaned: {Helper.GetLastUpdatedText(database.lastUpdated)}");
+			
 			return true;
 		}
 

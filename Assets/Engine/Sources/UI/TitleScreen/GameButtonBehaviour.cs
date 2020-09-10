@@ -135,8 +135,8 @@ public class GameButtonBehaviour : MonoBehaviour
 		string homeTeamName = homeTeam?.fullName ?? "Unknown Team";
 		string awayTeamName = awayTeam?.fullName ?? "Unknown Team";
 
-		string homeColorString = homeTeam?.mainColor ?? "0x666666";
-		string awayColorString = awayTeam?.mainColor ?? "0x666666";
+		string homeColorString = homeTeam?.mainColor ?? "#666666";
+		string awayColorString = awayTeam?.mainColor ?? "#666666";
 
 		Color homeColorColor = Color.gray, awayColorColor = Color.gray;
 		ColorUtility.TryParseHtmlString(homeColorString, out homeColorColor);

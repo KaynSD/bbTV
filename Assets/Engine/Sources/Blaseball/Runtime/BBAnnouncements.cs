@@ -29,9 +29,9 @@ namespace blaseball.runtime {
 			announcements.Enqueue(announcement);
 		}
 
-		public string GetAnnouncement() {
+		public string GetAnnouncement(bool requireNonsense) {
 
-			if(announcements.Count > 0 && Random.value > 0.1f) {
+			if(!requireNonsense && announcements.Count > 0 && Random.value > 0.1f) {
 				return announcements.Dequeue();
 			} else {
 				int randomValue; 

@@ -76,25 +76,26 @@ public class PlayerInformationChiron : MonoBehaviour
 
 	private IEnumerator LoadTloppsCard(BBPlayer player)
 	{
-		UnityWebRequest www = new UnityWebRequest(fileLoader.GetPlayerTloppsCard(player.id));
-		www.downloadHandler = new DownloadHandlerTexture();
-		yield return www.SendWebRequest();
-
-		if(www.isNetworkError || www.isHttpError) {
-			Debug.Log($"Failed to load card for {player.name}");
+		if(player == null) {
 			TloppsCardContainer.gameObject.SetActive(false);
+			yield return true;
 		} else {
-			TloppsCardContainer.gameObject.SetActive(true);
-			Texture2D c = ((DownloadHandlerTexture)www.downloadHandler).texture;
-			TloppsCardImage.sprite = Sprite.Create(
-				c, 
-				new Rect(0, 0, c.width, c.height), 
-				new Vector2(0.5f, 0.5f),
-				100
-			);
-			//TloppsCardImage.material = new Material(TloppsCardImage.material.shader);
-			//TloppsCardImage.color = Color.white;
-			//TloppsCardImage.material.SetTexture("_MainTex", ((DownloadHandlerTexture)www.downloadHandler).texture);
+			UnityWebRequest www = new UnityWebRequest(fileLoader.GetPlayerTloppsCard(player.id));
+			www.downloadHandler = new DownloadHandlerTexture();
+			yield return www.SendWebRequest();
+
+			if(www.isNetworkError || www.isHttpError) {
+				TloppsCardContainer.gameObject.SetActive(false);
+			} else {
+				TloppsCardContainer.gameObject.SetActive(true);
+				Texture2D c = ((DownloadHandlerTexture)www.downloadHandler).texture;
+				TloppsCardImage.sprite = Sprite.Create(
+					c, 
+					new Rect(0, 0, c.width, c.height), 
+					new Vector2(0.5f, 0.5f),
+					100
+				);
+			}
 		}
 	}
 }
